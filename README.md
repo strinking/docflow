@@ -35,7 +35,7 @@ python3 run.py
 deactivate
 ```
 
-To **run the tests**, you need `pytest` and `pylint` installed. Installation is pretty straightforward:
+To **run the tests**, you need [`pytest`](https://pytest.org) and [`pylint`](https://www.pylint.org) installed. Installation is pretty straightforward:
 ```bash
 pip3 install pytest
 pip3 install pylint
