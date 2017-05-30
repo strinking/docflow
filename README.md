@@ -35,7 +35,13 @@ python3 run.py
 deactivate
 ```
 
+To **run the tests**, you need `pytest` and `pylint` installed. Installation is pretty straightforward:
+```bash
+pip3 install pytest
+pip3 install pylint
+```
+
 ## Contributing
 The master branch **must always be working without any bugs**, so adding new features, fixing bugs, refactoring code or other changes must be worked on within branches. For discussion and getting your branch merged, please use Pull Requests. Also, please make sure to use *descriptive commit messages* so other collaborators can understand your changes easier. Each commit should represent *one idea*. Please view [this](https://guides.github.com/introduction/flow/) for a more detailed description of the GitHub Flow.
 
-Pull Requests are validated through the tests in `test` using **Travis**.
+Pull Requests are validated through the tests in `test` using **Travis**, make sure that they pass before submitting one. Additionally, make sure your code conforms to `PEP8`. Tools like [`autopep8`](https://pypi.python.org/pypi/autopep8/) ease this process a lot.
