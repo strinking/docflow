@@ -36,6 +36,6 @@ deactivate
 ```
 
 ## Contributing
-The master branch **must always be working without any bugs**, so adding new features, fixing bugs, refactoring code or other changes must be worked on within branches. For discussion and getting your branch merged, please use Pull Requests.  
+The master branch **must always be working without any bugs**, so adding new features, fixing bugs, refactoring code or other changes must be worked on within branches. For discussion and getting your branch merged, please use Pull Requests. Also, please make sure to use *descriptive commit messages* so other collaborators can understand your changes easier.
 
 Pull Requests are validated through the tests in `test` using **Travis**.
