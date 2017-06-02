@@ -1,3 +1,4 @@
+import datetime
 import discord
 
 from discord.ext import commands
@@ -8,6 +9,14 @@ DESCRIPTION = 'Hello! I am a Bot providing code evaluation and documentation sea
 class Bot(commands.AutoShardedBot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
+        self.start_time = datetime.datetime.utcnow()
+
+    @property
+    def uptime(self) -> datetime.timedelta:
+        return datetime.datetime.utcnow() - self.start_time
+
+    async def on_ready(self):
+        pass
 
     async def on_command_error(self, ctx, error):
         async def send_error(description):
@@ -41,3 +50,4 @@ class Bot(commands.AutoShardedBot):
 
 if __name__ == '__main__':
     bot = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+
