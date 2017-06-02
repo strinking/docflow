@@ -1,9 +1,22 @@
 import datetime
-import discord
+import os
 
+import discord
 from discord.ext import commands
 
 DESCRIPTION = 'Hello! I am a Bot providing code evaluation and documentation search.'
+DISCORD_TOKEN = ''
+START_FAIL_MSG = (
+    'Failed to start the Bot. You have the following options for starting:\n'
+    '- Use an environment variable called DISCORD_TOKEN.\n'
+    '  Doing this with a virtual environment is explained in the README.md.\n'
+    '- Set the variable DISCORD_TOKEN in `run.py` to your token.\n'
+    '  Not recommended, as you might commit it by accident.\n'
+    '- Create a file called `token.txt` containing just your token.\n'
+    '  You can make Git ignore this file by using '
+    '  `git update-index --assume-unchanged token.txt`. To revert, use '
+    '   `--no-assume-unchanged`.'
+)
 
 
 class Bot(commands.AutoShardedBot):
@@ -15,8 +28,9 @@ class Bot(commands.AutoShardedBot):
     def uptime(self) -> datetime.timedelta:
         return datetime.datetime.utcnow() - self.start_time
 
-    async def on_ready(self):
-        pass
+    @staticmethod
+    async def on_ready():
+        print('Logged in.')
 
     async def on_command_error(self, ctx, error):
         async def send_error(description):
@@ -50,4 +64,13 @@ class Bot(commands.AutoShardedBot):
 
 if __name__ == '__main__':
     bot = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+    if 'DISCORD_TOKEN' in os.environ:
+        bot.run(os.environ['DISCORD_TOKEN'])
+    elif DISCORD_TOKEN != '':
+        bot.run(DISCORD_TOKEN)
+    elif os.path.exists(os.path.join(os.getcwd(), 'token.txt')):
+        with open('token.txt', 'r') as f:
+            bot.run(f.read())
+    else:
+        print(START_FAIL_MSG)
 
