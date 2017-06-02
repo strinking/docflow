@@ -1,3 +1,4 @@
+"""Houses Meta commands about the Bot, such as uptime or other statistics."""
 import discord
 
 from discord.ext import commands
