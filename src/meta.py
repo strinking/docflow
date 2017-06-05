@@ -9,7 +9,7 @@ SECONDS_IN_A_DAY = 86400
 
 class Meta:
     """Meta Commands with information about the Bot, as well as an invitation link."""
-    def __init__(self, bot: Bot):
+    def __init__(self, bot):
         self.bot = bot
 
     def __unload(self):
