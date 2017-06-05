@@ -59,10 +59,10 @@ class Admin:
             ))
         else:
             self.bot.remove_cog(cog_name)
-            self.bot.unload_extension('src.' + cog_name.lower())
-            self.bot.load_extension('src.' + cog_name.lower())
+            self.bot.unload_extension(cog_name.lower())
+            self.bot.load_extension(cog_name.lower())
             await ctx.send(embed=discord.Embed(
-                title=f'Reloaded Cog {cog_name}',
+                title=f'Reloaded Cog {cog_name}.',
                 colour=discord.Colour.green()
             ))
 
@@ -103,7 +103,7 @@ class Admin:
             ))
         else:
             self.bot.remove_cog(cog_name)
-            self.bot.unload_extension('src.' + cog_name.lower())
+            self.bot.unload_extension(cog_name.lower())
             await ctx.send(embed=discord.Embed(
                 title=f'Unloaded the {cog_name} Cog.',
                 colour=discord.Colour.green()
