@@ -25,8 +25,8 @@ class Meta:
     async def uptime(self, ctx):
         """Shows the Bot's uptime as well as its starting time."""
         await ctx.send(embed=discord.Embed(
-            colour=discord.Colour.blue(),
-            description=f'**Uptime**: `{self.get_readable_uptime()}`'
+            description=f'**Uptime**: `{self.get_readable_uptime()}`',
+            colour=discord.Colour.blue()
         ))
 
     @commands.command()
@@ -58,6 +58,14 @@ class Meta:
         ).colour = discord.Colour.blue()
 
         await ctx.send(stats)
+
+    async def cogs(self, ctx):
+        """List all currently loaded Cogs."""
+        await ctx.send(embed=discord.Embed(
+            title=f'Currently loaded Cogs ({len(self.bot.cogs)} total)',
+            description=', '.join(self.bot.cogs),
+            colour=discord.Colour.blue()
+        ))
 
 
 def setup(bot):
