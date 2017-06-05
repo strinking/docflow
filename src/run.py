@@ -19,6 +19,10 @@ Failed to start the Bot. You have the following options for starting it:
     `git update-index --assume-unchanged token.txt`. To revert, use 
     `--no-assume-unchanged`.'
 """
+COGS_ON_LOGIN = [
+    'admin',
+    'meta'
+]
 
 
 class Bot(commands.AutoShardedBot):
@@ -64,7 +68,11 @@ class Bot(commands.AutoShardedBot):
             await send_error(error_msg)
         elif isinstance(error, commands.CommandInvokeError):
             owner = self.get_user(self.owner_id)
-            await owner.send(embed=discord.Embed(
+            if owner is not None:
+                destination = owner
+            else:
+                destination = ctx.channel
+            await destination.send(embed=discord.Embed(
                 title=f'Exception in command `{ctx.message.content}`',
                 description=error.original,
                 colour=discord.Colour.red()
@@ -75,6 +83,10 @@ class Bot(commands.AutoShardedBot):
 
 if __name__ == '__main__':
     BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+
+    for cog in COGS_ON_LOGIN:
+        BOT.load_extension(cog)
+
     if 'DISCORD_TOKEN' in os.environ:
         BOT.run(os.environ['DISCORD_TOKEN'])
     elif DISCORD_TOKEN != '':

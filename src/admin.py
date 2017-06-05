@@ -1,6 +1,5 @@
 """Contains functions to administrate the Bot."""
 import discord
-import os
 
 from discord.ext import commands
 
@@ -59,10 +58,9 @@ class Admin:
                 colour=discord.Colour.red()
             ))
         else:
-            # possible errors?
             self.bot.remove_cog(cog_name)
-            self.bot.unload_extension(os.path.join('src', cog_name.lower()))
-            self.bot.load_extension(os.path.join('src', cog_name.lower()))
+            self.bot.unload_extension('src.' + cog_name.lower())
+            self.bot.load_extension('src.' + cog_name.lower())
             await ctx.send(embed=discord.Embed(
                 title=f'Reloaded Cog {cog_name}',
                 colour=discord.Colour.green()
@@ -79,11 +77,19 @@ class Admin:
                 colour=discord.Colour.red()
             ))
         else:
-            self.bot.load_extension(os.path.join('src', cog_name.lower()))
-            await ctx.send(embed=discord.Embed(
-                title=f'Loaded the {cog_name} Cog.',
-                colour=discord.Colour.green()
-            ))
+            try:
+                self.bot.load_extension(cog_name.lower())
+            except (ModuleNotFoundError, TypeError) as err:
+                await ctx.send(embed=discord.Embed(
+                    title=f'Failed to load {cog_name}:',
+                    description=err,
+                    colour=discord.Colour.red()
+                ))
+            else:
+                await ctx.send(embed=discord.Embed(
+                    title=f'Loaded the {cog_name} Cog.',
+                    colour=discord.Colour.green()
+                ))
 
     @commands.command()
     @commands.check(is_permitted)
@@ -97,7 +103,7 @@ class Admin:
             ))
         else:
             self.bot.remove_cog(cog_name)
-            self.bot.unload_extension(os.path.join('src', cog_name.lower()))
+            self.bot.unload_extension('src.' + cog_name.lower())
             await ctx.send(embed=discord.Embed(
                 title=f'Unloaded the {cog_name} Cog.',
                 colour=discord.Colour.green()

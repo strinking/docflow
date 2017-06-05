@@ -19,7 +19,7 @@ class Meta:
             unit = 'd'
         else:
             unit = 'h'
-        return str(self.bot.uptime) + unit
+        return str(self.bot.uptime)[:-7] + ' ' + unit
 
     @commands.command()
     async def uptime(self, ctx):
@@ -35,7 +35,7 @@ class Meta:
         link = ('https://discordapp.com/oauth2/authorize?'
                 f'client_id={self.bot.user.id}&scope=bots')
         await ctx.send(embed=discord.Embed(
-            title='Invitation Link',
+            title='Invite Link',
             description=link,
             colour=discord.Colour.blue()
         ))
@@ -49,7 +49,7 @@ class Meta:
             value=f'Present in {sum(1 for _ in self.bot.guilds)} Guilds'
         ).add_field(
             name='Users',
-            value=(f'**Total**: {sum(1 for _ self.bot.users)}\n'
+            value=(f'**Total**: {sum(1 for _ in self.bot.users)}\n'
                    f'**Unique**: {sum(1 for _ in set(self.bot.users))}')
         ).add_field(
             name='Uptime',
@@ -57,8 +57,9 @@ class Meta:
                    f'**Uptime**: {self.get_readable_uptime()}')
         ).colour = discord.Colour.blue()
 
-        await ctx.send(stats)
+        await ctx.send(embed=stats)
 
+    @commands.command()
     async def cogs(self, ctx):
         """List all currently loaded Cogs."""
         await ctx.send(embed=discord.Embed(
