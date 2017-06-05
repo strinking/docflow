@@ -50,6 +50,26 @@ class Admin:
 
     @commands.command()
     @commands.check(is_permitted)
+    async def reload(self, ctx, *, cog_name: str):
+        """Reloads a single Cog."""
+        cog_name = cog_name.title()
+        if cog_name not in self.bot.cogs:
+            await ctx.send(embed=discord.Embed(
+                title=f'No Cog named `{cog_name}` currently loaded or found.',
+                colour=discord.Colour.red()
+            ))
+        else:
+            # possible errors?
+            self.bot.remove_cog(cog_name)
+            self.bot.unload_extension(os.path.join('src', cog_name.lower()))
+            self.bot.load_extension(os.path.join('src', cog_name.lower()))
+            await ctx.send(embed=discord.Embed(
+                title=f'Reloaded Cog {cog_name}',
+                colour=discord.Colour.green()
+            ))
+
+    @commands.command()
+    @commands.check(is_permitted)
     async def load(self, ctx, *, cog_name: str):
         """Load a Cog."""
         cog_name = cog_name.title()
@@ -59,7 +79,7 @@ class Admin:
                 colour=discord.Colour.red()
             ))
         else:
-            self.bot.load_extension(os.path.join('src',cog_name.lower()))
+            self.bot.load_extension(os.path.join('src', cog_name.lower()))
             await ctx.send(embed=discord.Embed(
                 title=f'Loaded the {cog_name} Cog.',
                 colour=discord.Colour.green()
@@ -77,6 +97,7 @@ class Admin:
             ))
         else:
             self.bot.remove_cog(cog_name)
+            self.bot.unload_extension(os.path.join('src', cog_name.lower()))
             await ctx.send(embed=discord.Embed(
                 title=f'Unloaded the {cog_name} Cog.',
                 colour=discord.Colour.green()
