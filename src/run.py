@@ -41,7 +41,7 @@ class Bot(commands.AutoShardedBot):
         """The on_ready Event, emitted by Discord."""
         print('Logged in.')
 
-    async def on_command_error(self, ctx, error):
+    async def on_command_error(self, ctx, error):  # pylint: disable=arguments-differ
         """Handles all errors returned from Commands."""
         async def send_error(description):
             """A small helper function which sends an Embed with red colour."""
