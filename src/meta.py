@@ -2,7 +2,6 @@
 import discord
 
 from discord.ext import commands
-from .run import Bot
 
 SECONDS_IN_A_DAY = 86400
 
@@ -59,3 +58,7 @@ class Meta:
         ).colour = discord.Colour.blue()
 
         await ctx.send(stats)
+
+
+def setup(bot):
+    bot.add_cog(Meta(bot))
