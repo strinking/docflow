@@ -21,6 +21,7 @@ Failed to start the Bot. You have the following options for starting it:
 """
 COGS_ON_LOGIN = [
     'admin',
+    'eval',
     'meta'
 ]
 
