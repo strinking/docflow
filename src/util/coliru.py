@@ -2,8 +2,11 @@ import aiohttp
 import json
 
 LANGS = {
+    'c': 'mv main.cpp main.c && gcc -std=c11 -Wall -Wextra -pthread main.c && ./a.out',
     'cpp': 'g++ -std=c++1z -Wall -Wextra -pthread main.cpp && ./a.out',
-    'py': 'python3 main.cpp'
+    'sh': 'sh main.cpp',
+    'py': 'python3 main.cpp',
+    'ruby': 'ruby main.cpp'
 }
 
 
@@ -11,8 +14,7 @@ async def post(cmd: str, src: str):
     data = json.dumps({'cmd': cmd, 'src': src})
     async with aiohttp.ClientSession() as cs:
         async with cs.post('http://coliru.stacked-crooked.com/compile', data=data) as r:
-            print(await r.text())
-            return await r.json()
+            return await r.text()
 
 
 async def evaluate(lang: str, src: str):

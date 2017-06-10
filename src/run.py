@@ -2,6 +2,8 @@
 
 import datetime
 import os
+import traceback
+import sys
 
 import discord
 from discord.ext import commands
@@ -68,14 +70,16 @@ class Bot(commands.AutoShardedBot):
                          'information about its usage.')
             await send_error(error_msg)
         elif isinstance(error, commands.CommandInvokeError):
-            owner = self.get_user(self.owner_id)
-            if owner is not None:
-                destination = owner
-            else:
-                destination = ctx.channel
-            await destination.send(embed=discord.Embed(
-                title=f'Exception in command `{ctx.message.content}`',
-                description=error.original,
+            await ctx.send(embed=discord.Embed(
+                title=f'Exception in command occurred, check console for details.',
+                colour=discord.Colour.red()
+            ))
+            print('In {0.command.qualified_name}:'.format(ctx), file=sys.stderr)
+            traceback.print_tb(error.original.__traceback__)
+            print('{0.__class__.__name__}: {0}'.format(error.original), file=sys.stderr)
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(embed=discord.Embed(
+                title='This Command is currently on cooldown.',
                 colour=discord.Colour.red()
             ))
         elif isinstance(error, commands.CommandNotFound):

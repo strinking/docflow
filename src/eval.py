@@ -1,8 +1,26 @@
+import datetime
 import discord
-
 
 from discord.ext import commands
 from util import coliru
+
+
+LANGUAGE_IMAGES = {
+    'c': 'https://cdn.discordapp.com/emojis/232956938965614592.png',
+    'cpp': 'http://logos-vector.com/images/logo/xxl/1/3/7/137285/C__7d201_450x450.png',
+    'py': ('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/'
+           'Python-logo-notext.svg/1024px-Python-logo-notext.svg.png'),
+    'sh': 'https://openforums.files.wordpress.com/2013/06/terminal-icon-512x512.png',
+    'ruby': 'https://cdn.codementor.io/assets/topic/category_header/ruby-on-rails-bc9ab2af8d92eb4e7eb3211d548a09ad.png'
+}
+
+LANGUAGE_NAMES = {
+    'c': 'C',
+    'cpp': 'C++',
+    'py': 'Python',
+    'sh': 'Shell',
+    'ruby': 'Ruby'
+}
 
 
 class Eval:
@@ -14,24 +32,32 @@ class Eval:
         pass
 
     @commands.command(name='eval')
-    @commands.cooldown(rate=1, per=60., type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=5., type=commands.BucketType.user)
     async def eval_(self, ctx, *, code_block: str):
-        """Evaluate the given Codeblock. The language must be specified in the highlighter."""
-        lang = code_block[3:6].replace(' ', '').replace('\n', '')
+        """Evaluate the given Codeblock. The language must be specified."""
+        lang = code_block[3:code_block.find('\n')].replace(' ', '').replace('\n', '').lower()
         if lang not in coliru.LANGS:
             await ctx.send(embed=discord.Embed(
                 title='Eval: Unknown Language',
-                description=f'Known laanguages: {", ".join(coliru.LANGS)}',
-                colour=discord.Colour.blue()
+                description=f'Known languages: {", ".join(coliru.LANGS)}',
+                colour=discord.Colour.red()
             ))
         else:
             code = code_block.strip('`')[len(lang):]
+            start_time = datetime.datetime.now()
             result = await coliru.evaluate(lang, code)
+            execution_time = datetime.datetime.now() - start_time
             await ctx.send(embed=discord.Embed(
-                title='Eval Results'
+                colour=discord.Colour.blue()
             ).add_field(
-                name='Output',
+                name='Eval Results',
                 value=f'```{lang}\n{result}```'
+            ).set_author(
+                name=ctx.message.author,
+                icon_url=ctx.message.author.avatar_url
+            ).set_footer(
+                text=f'{LANGUAGE_NAMES[lang]} Evaluation | Execution time: {str(execution_time)[:-4]}',
+                icon_url=LANGUAGE_IMAGES[lang]
             ))
 
 
