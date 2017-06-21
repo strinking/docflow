@@ -82,7 +82,7 @@ class Admin:
             except (ModuleNotFoundError, TypeError) as err:
                 await ctx.send(embed=discord.Embed(
                     title=f'Failed to load {cog_name}:',
-                    description=err,
+                    description=str(err),
                     colour=discord.Colour.red()
                 ))
             else:
