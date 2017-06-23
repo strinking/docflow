@@ -17,8 +17,8 @@ Failed to start the Bot. You have the following options for starting it:
 - Set the variable DISCORD_TOKEN in `run.py` to your token.
     Not recommended, as you might commit it by accident.
 - Create a file called `token.txt` containing just your token.
-    You can make Git ignore this file by using 
-    `git update-index --assume-unchanged token.txt`. To revert, use 
+    You can make Git ignore this file by using
+    `git update-index --assume-unchanged token.txt`. To revert, use
     `--no-assume-unchanged`.'
 """
 COGS_ON_LOGIN = [
@@ -98,6 +98,6 @@ if __name__ == '__main__':
         BOT.run(DISCORD_TOKEN)
     elif os.path.exists(os.path.join(os.getcwd(), 'token.txt')):
         with open('token.txt', 'r') as f:
-            BOT.run(f.read())
+            BOT.run(f.read().strip())
     else:
         print(START_FAIL_MSG)
