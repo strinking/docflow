@@ -8,18 +8,11 @@ import sys
 import discord
 from discord.ext import commands
 
-DESCRIPTION = 'Hello! I am a Bot providing code evaluation and documentation search.'
-DISCORD_TOKEN = ''
+DESCRIPTION = 'Hello! I am a Bot providing code eval and documentation search.'
 START_FAIL_MSG = """
-Failed to start the Bot. You have the following options for starting it:
-- Use an environment variable called DISCORD_TOKEN.
-    Doing this with a virtual environment is explained in the README.md.
-- Set the variable DISCORD_TOKEN in `run.py` to your token.
-    Not recommended, as you might commit it by accident.
-- Create a file called `token.txt` containing just your token.
-    You can make Git ignore this file by using
-    `git update-index --assume-unchanged token.txt`. To revert, use
-    `--no-assume-unchanged`.'
+Failed to start the Bot.
+Please set an environment variable named DISCORD_TOKEN
+as described in README.md which the bot can use to login.
 """
 COGS_ON_LOGIN = [
     'admin',
@@ -101,10 +94,5 @@ if __name__ == '__main__':
 
     if 'DISCORD_TOKEN' in os.environ:
         BOT.run(os.environ['DISCORD_TOKEN'])
-    elif DISCORD_TOKEN != '':
-        BOT.run(DISCORD_TOKEN)
-    elif os.path.exists(os.path.join(os.getcwd(), 'token.txt')):
-        with open('token.txt', 'r') as f:
-            BOT.run(f.read().strip())
     else:
         print(START_FAIL_MSG)

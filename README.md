@@ -36,11 +36,6 @@ python3 run.py
 deactivate
 ```
 
-To **run the tests**, you need [`pytest`](https://pytest.org) and [`pylint`](https://www.pylint.org) installed. Installation is pretty straightforward:
-```bash
-pip3 install pytest
-pip3 install pylint
-```
 
 ## Contributing
 The master branch **must always be working without any bugs**, so adding new features, fixing bugs, refactoring code or other changes must be worked on within branches. For discussion and getting your branch merged, please use Pull Requests. Also, please make sure to use *descriptive commit messages* so other collaborators can understand your changes easier. Each commit should represent *one idea*. Please view [this](https://guides.github.com/introduction/flow/) for a more detailed description of the GitHub Flow.
