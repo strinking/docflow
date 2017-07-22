@@ -41,7 +41,8 @@ class Bot(commands.AutoShardedBot):
         """The on_ready Event, emitted by Discord."""
         print('Logged in.')
 
-    async def on_command_error(self, ctx, error):
+    @staticmethod
+    async def on_command_error(ctx, error, **kwargs):
         """Handles all errors returned from Commands."""
         async def send_error(description):
             """A small helper function which sends an Embed with red colour."""
