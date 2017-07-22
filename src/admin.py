@@ -4,26 +4,13 @@ import discord
 from discord.ext import commands
 
 
-PERMITTED_USERS = [
-    196989358165852160,  # Volcyy
-    98633956773093376,  # Mallard
-    130012001236811776,  # Maware
-    155267292047867904,  # Hatefrog
-    197177484792299522  # Aeshthetic
-]
-
-
-def is_permitted(ctx: commands.Context):
-    return ctx.author.id in PERMITTED_USERS
-
-
 class Admin:
     """Commands for administrating the Bot."""
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    @commands.check(is_permitted)
+    @commands.has_permissions(manage_server=True)
     async def shutdown(self, ctx):
         """Shut the Bot down."""
         await ctx.send(embed=discord.Embed(
@@ -33,7 +20,7 @@ class Admin:
         await self.bot.close()
 
     @commands.command()
-    @commands.check(is_permitted)
+    @commands.has_permissions(manage_server=True)
     async def reloadall(self, ctx):
         """Reload all currently loaded Cogs."""
         # Cast to list to prevent a RuntimeError, since we just want the iteration for the names of the Cogs
@@ -48,7 +35,7 @@ class Admin:
         ))
 
     @commands.command()
-    @commands.check(is_permitted)
+    @commands.has_permissions(manage_server=True)
     async def reload(self, ctx, *, cog_name: str):
         """Reloads a single Cog."""
         cog_name = cog_name.title()
@@ -67,7 +54,7 @@ class Admin:
             ))
 
     @commands.command()
-    @commands.check(is_permitted)
+    @commands.has_permissions(manage_server=True)
     async def load(self, ctx, *, cog_name: str):
         """Load a Cog."""
         cog_name = cog_name.title()
@@ -92,7 +79,7 @@ class Admin:
                 ))
 
     @commands.command()
-    @commands.check(is_permitted)
+    @commands.has_permissions(manage_server=True)
     async def unload(self, ctx, *, cog_name: str):
         """Unload a Cog."""
         cog_name = cog_name.title()
