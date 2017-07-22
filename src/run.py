@@ -58,25 +58,32 @@ class Bot(commands.AutoShardedBot):
             ))
 
         if isinstance(error, commands.MissingRequiredArgument):
-            error_msg = ('You are missing the parameter '
-                         f'{error.param} for the Command.')
-            await send_error(error_msg)
+            await send_error(
+                f'You are missing the parameter {error.param} for the Command.'
+            )
         elif isinstance(error, commands.NoPrivateMessage):
-            error_msg = 'This Command cannot be used in Private Messages.'
-            await send_error(error_msg)
+            await send_error(
+                'This Command cannot be used in Private Messages.'
+            )
         elif isinstance(error, commands.BadArgument):
-            error_msg = ('You invoked the Command with the wrong type of '
-                         'arguments. Use `.help <command>` to get'
-                         'information about its usage.')
-            await send_error(error_msg)
+            await send_error(
+                'You invoked the Command with the wrong type of arguments. Use'
+                '`.help <command>` to get information about its usage.'
+            )
         elif isinstance(error, commands.CommandInvokeError):
             await ctx.send(embed=discord.Embed(
-                title=f'Exception in command occurred, check console for details.',
+                title='Exception in command occurred, traceback printed.',
                 colour=discord.Colour.red()
             ))
-            print('In {0.command.qualified_name}:'.format(ctx), file=sys.stderr)
+            print(
+                'In {0.command.qualified_name}:'.format(ctx),
+                file=sys.stderr
+            )
             traceback.print_tb(error.original.__traceback__)
-            print('{0.__class__.__name__}: {0}'.format(error.original), file=sys.stderr)
+            print(
+                '{0.__class__.__name__}: {0}'.format(error.original),
+                file=sys.stderr
+            )
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(embed=discord.Embed(
                 title='This Command is currently on cooldown.',
