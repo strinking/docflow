@@ -63,7 +63,7 @@ class Eval:
                 icon_url=ctx.message.author.avatar_url
             ).set_footer(
                 text=(f'{LANGUAGE_NAMES[lang]} Evaluation |'
-                      ' Execution time: {str(execution_time)[:-4]}'),
+                      f' Execution time: {str(execution_time)[:-4]}'),
                 icon_url=LANGUAGE_IMAGES[lang]
             ))
 
