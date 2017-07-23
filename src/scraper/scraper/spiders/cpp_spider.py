@@ -39,6 +39,7 @@ class BjarneSpider(scrapy.Spider):
         signatures = response.css("tbody tr.t-dcl span::text").extract()
         description = response.css("div.mw-content-ltr").xpath("string(p)").extract()
         parameters = response.css("table.t-par-begin").xpath("string(.//tr)").extract()
+        example = response.css("div.t-example div.cpp").xpath("string(pre)").extract_first()
         yield {
             'names': [
                 "std::" + x.replace(', ', '') for x in names if x != ', '
@@ -55,4 +56,5 @@ class BjarneSpider(scrapy.Spider):
             'params': [
                 param.replace('\n', '') for param in parameters
             ],
+            'example': example
         }
