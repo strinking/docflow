@@ -39,6 +39,7 @@ class BjarneSpider(scrapy.Spider):
         signatures = response.css("tbody tr.t-dcl span::text").extract()
         description = response.css("div.mw-content-ltr").xpath("string(p)").extract()
         parameters = response.css("table.t-par-begin").xpath("string(.//tr)").extract()
+        return_values = response.css("div.mw-content-ltr > div.t-li1").extract()
         example = response.css("div.t-example div.cpp").xpath("string(pre)").extract_first()
         yield {
             'names': [
@@ -52,6 +53,9 @@ class BjarneSpider(scrapy.Spider):
             ],
             'desc': [
                 remove_tags(paragraph) for paragraph in description
+            ],
+            'return': [
+                remove_tags(r_val) for r_val in return_values
             ],
             'params': [
                 param.replace('\n', '') for param in parameters
