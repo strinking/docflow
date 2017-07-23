@@ -35,7 +35,7 @@ class BjarneSpider(scrapy.Spider):
     @staticmethod
     def parse_std_symbol(response):
         names = response.css("h1.firstHeading::text").extract()
-        headers = response.css("table.t-dcl-begin tr.t-dsc-header a::text")
+        headers = response.css("tr.t-dsc-header a::text").extract()
         signatures = response.css("tbody tr.t-dcl span::text").extract()
         description = response.css("div.mw-content-ltr").xpath("string(p)").extract()
         parameters = response.css("table.t-par-begin").xpath("string(.//tr)").extract()
@@ -46,7 +46,7 @@ class BjarneSpider(scrapy.Spider):
                 "std::" + x.replace(', ', '') for x in names if x != ', '
             ],
             'defined_in_header': [
-                x for x in headers if x not in headers
+                list(set(headers))
             ],
             'sigs': [
                 ''.join(signatures).split(';')
