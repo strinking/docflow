@@ -1,3 +1,4 @@
+scrapy
 aiohttp>=2.0.7
 astroid>=1.5.2
 async-timeout>=1.2.1
