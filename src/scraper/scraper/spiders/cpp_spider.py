@@ -56,5 +56,6 @@ class BjarneSpider(scrapy.Spider):
             'params': [
                 param.replace('\n', '') for param in parameters
             ],
-            'example': example
+            'example': example,
+            'link': response.url
         }
