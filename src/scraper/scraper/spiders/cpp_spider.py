@@ -54,7 +54,7 @@ class BjarneSpider(scrapy.Spider):
                 remove_tags(r_val) for r_val in return_values
             ],
             'params': [
-                param.replace('\n', '') for param in parameters
+                param.replace('\n', '').strip() for param in parameters
             ],
             'example': example,
             'link': response.url
