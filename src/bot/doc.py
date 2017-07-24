@@ -14,9 +14,7 @@ class DocSearch:
     def get_doc_path(self, ref_name: str):
         """Gets the full path to the specified documentation file."""
 
-        path = os.path.join(os.path.abspath(os.path.pardir), 'docflow', 'src', 'doc', ref_name)
-        print(path)
-        return path
+        return os.path.join(os.path.abspath(os.path.pardir), 'docflow', 'src', 'doc', ref_name)
 
     def ref_exists(self, ref_name: str):
         """Checks if the given reference document exists."""
