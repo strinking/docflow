@@ -21,7 +21,6 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
             symbol = symbol_obj
             break
     else:
-        print('didn"t find it')
         return None
 
     return discord.Embed(
