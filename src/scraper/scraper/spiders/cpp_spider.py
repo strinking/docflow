@@ -2,10 +2,27 @@ import scrapy
 from w3lib.html import remove_tags
 
 
+def parse_signatures(sigs):
+    result = []
+    sigs_as_string = ''.join(sigs)
+    length_description = len("(Since C++..)")
+    idx = 0
+    last_idx = 0
+    for char, next_char in zip(sigs_as_string, sigs_as_string[1:] + 'x'):
+        idx += 1
+        if char == ';':
+            # ...;(Since C++..)
+            if next_char == '(':
+                result.append(sigs_as_string[last_idx:idx + length_description])
+            # ...;
+            else:
+                result.append(sigs_as_string[last_idx:idx + length_description])
+            last_idx = idx + length_description
+    return result
+
+
 class BjarneSpider(scrapy.Spider):
     name = "cppreference"
-    # Use google webcache instead?
-    # http://webcache.googleusercontent.com/search?q=cache:en.cppreference.com/w/c/
     start_urls = [
         "http://en.cppreference.com/w/c",
         "http://en.cppreference.com/w/cpp"
@@ -39,20 +56,18 @@ class BjarneSpider(scrapy.Spider):
         signatures = response.css("tbody tr.t-dcl span::text").extract()
         description = response.css("div.mw-content-ltr").xpath("string(p)").extract()
         parameters = response.css("table.t-par-begin").xpath("string(.//tr)").extract()
-        return_values = response.css("div.mw-content-ltr > div.t-li1").extract()
+        return_values = []
         example = response.css("div.t-example div.cpp").xpath("string(pre)").extract_first()
         yield {
             'names': [
                 "std::" + x.replace(', ', '') for x in names if x != ', '
             ],
             'defined_in_header': list(set(headers)),
-            'sigs': ''.join(signatures).split(';'),
+            'sigs': parse_signatures(signatures),
             'desc': [
                 remove_tags(paragraph) for paragraph in description
             ],
-            'return': [
-                remove_tags(r_val) for r_val in return_values
-            ],
+            'return': return_values,
             'params': [
                 param.replace('\n', '').strip() for param in parameters
             ],
