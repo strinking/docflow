@@ -31,7 +31,7 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
         text="Data from cppreference.com, licensed under CC-BY-SA and GFDL.",
     ).add_field(
         name="Defined in Header(s)",
-        value='`' + '`, `'.join(symbol['defined_in_header']) + '`'
+        value='`' + '`, `'.join(symbol['defined_in_header']) + '`' or "No definition found."
     ).add_field(
         name="Signature",
         value="```cpp\n" + ';\n'.join(symbol['sigs']) + "```"

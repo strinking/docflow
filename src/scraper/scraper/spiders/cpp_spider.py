@@ -17,6 +17,9 @@ class CppSymbolSpider(scrapy.Spider):
     @staticmethod
     def parse_symbol_index(response):
         names = response.css("h1.firstHeading::text").extract()
+        names_without_commas = [n.replace(', ', '') for n in names if n != ', ']
+        if not (names_without_commas and all(n.islower() or n == '_' for n in names_without_commas)):
+            return
         headers = response.css("tr.t-dsc-header a::text").extract()
         signatures = response.css("tbody tr.t-dcl span::text").extract()
         description = response.css("div.mw-content-ltr").xpath("string(p)").extract()
@@ -25,7 +28,7 @@ class CppSymbolSpider(scrapy.Spider):
         example = response.css("div.t-example div.cpp").xpath("string(pre)").extract_first()
         yield {
             'names': [
-                "std::" + x.replace(', ', '') for x in names if x != ', '
+                "std::" + n for n in names_without_commas
             ],
             'defined_in_header': list(set(headers)),
             'sigs': ''.join(s.replace('\u00a0', '') for s in signatures).split(';'),
