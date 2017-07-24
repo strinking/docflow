@@ -9,7 +9,7 @@ import json
 from typing import Optional
 
 
-CPP_SYMBOL_PATH = os.path.join(os.path.abspath(os.path.pardir), 'docflow', 'doc', "symbols.json")
+CPP_SYMBOL_PATH = os.path.join(os.path.abspath(os.path.pardir), 'docflow', 'doc', "cpp_symbols.json")
 
 
 def cpp_symbol(name: str) -> Optional[discord.Embed]:

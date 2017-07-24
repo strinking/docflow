@@ -39,7 +39,7 @@ class DocSearch:
         if not symbol.startswith("std::"):
             symbol = "std::" + symbol
 
-        if not self.ref_exists("symbols.json"):
+        if not self.ref_exists("cpp_symbols.json"):
             return await self.send_notice_no_ref_found(ctx, "C++")
 
         extracted = docextract.cpp_symbol(symbol)
