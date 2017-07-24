@@ -46,7 +46,7 @@ class BjarneSpider(scrapy.Spider):
                 "std::" + x.replace(', ', '') for x in names if x != ', '
             ],
             'defined_in_header': list(set(headers)),
-            'sigs': ''.join(signatures).split(';'),
+            'sigs': ''.join(signatures.replace('\u00a0', '')).split(';'),
             'desc': [
                 remove_tags(paragraph) for paragraph in description
             ],

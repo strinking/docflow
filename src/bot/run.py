@@ -16,6 +16,7 @@ as described in README.md which the bot can use to login.
 """
 COGS_ON_LOGIN = [
     'admin',
+    'doc',
     'eval',
     'meta'
 ]
