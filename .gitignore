@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # Cache from pytest
@@ -8,3 +7,6 @@ __pycache__/
 
 # Virtual Environment
 venv/
+
+# Scraped Documentation
+doc/*
