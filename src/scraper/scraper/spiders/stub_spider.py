@@ -20,6 +20,7 @@ class StubSpider(scrapy.Spider):
         yield {
             "name" : page_name,
             "items" : dict(zip(item_names, descriptions)),
+            "items_raw" : descriptions,
             "defined_in_header" : list(set(headers)),
             "link" : response.url
         }
