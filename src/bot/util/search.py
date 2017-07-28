@@ -12,11 +12,13 @@ def levenshtein(src, tgt):
     for s in src:
         curr_row = prev_row + 1
         curr_row[1:] = np.minimum(
-                curr_row[1:],
-                np.add(prev_row[:-1], tgt != s))
+            curr_row[1:],
+            np.add(prev_row[:-1], tgt != s)
+        )
         curr_row[1:] = np.minimum(
-                curr_row[1:],
-                curr_row[0:-1] + 1)
+            curr_row[1:],
+            curr_row[0:-1] + 1
+        )
         prev_row = curr_row
     return prev_row[-1]
 
