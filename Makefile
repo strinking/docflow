@@ -1,5 +1,16 @@
 
 
+# Command for the initial run of the bot, scrapes Documentation and then starts.
+firstrun:
+	echo "Scraping documentation data..."
+	scrape
+	echo "Starting Bot..."
+	python3 src/bot/run.py
+
+# Simple shortcut for starting the bot.
+run: 
+	python3 src/bot/run.py
+
 # Run all scraping spiders and put their results into the doc/ directory
 scrape:
 	mkdir -p doc/
