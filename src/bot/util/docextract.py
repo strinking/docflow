@@ -49,11 +49,8 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
     with open(CPP_SYMBOL_PATH, 'r') as f:
         data = json.load(f)
 
-    names = [obj["name"] for obj in data]
-    search_result = search(names, name)
-
     for symbol_obj in data:
-        if any(n == search_result for n in symbol_obj['names']):
+        if any(n == name for n in symbol_obj['names']):
             symbol = symbol_obj
             break
     else:
