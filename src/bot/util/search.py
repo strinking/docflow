@@ -29,8 +29,5 @@ def ratio(s1, s2):
 
 def search(items, query):
     results = [(item, ratio(item, query)) for item in items]
-    print(results)
-    sorted_results = sorted(results, key=lambda x: x[1], reverse=False)
-    print(sorted_results)
-    return sorted_results[0][0]
+    return min(results, key=lambda r: r[1])[0]
 
