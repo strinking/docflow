@@ -1,6 +1,10 @@
 import scrapy
 from w3lib.html import remove_tags
 
+
+from ..util import get_paragraphs
+
+
 class StubSpider(scrapy.Spider):
     name = "cpp-stubs"
     start_urls = [
@@ -14,12 +18,13 @@ class StubSpider(scrapy.Spider):
     @staticmethod
     def parse_stub(response):
         page_name = response.css("h1.firstHeading::text").extract_first()
-        item_names = [headline for headline in response.css("span.mw-headline::text").extract() if headline[0] is not ' ']
         headers = response.css("tr.t-dsc-header code::text").extract()
-        descriptions = [remove_tags(desc) for desc in response.css("div.mw-content-ltr p").extract()]
+        descriptions = [
+            remove_tags(desc) for desc in response.css("div.mw-content-ltr p").extract()
+        ]
         yield {
             "name" : page_name,
-            "items" : dict(zip(item_names, descriptions)),
+            "items" : get_paragraphs(response),
             "items_raw" : descriptions,
             "defined_in_header" : list(set(headers)),
             "link" : response.url
