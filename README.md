@@ -1,43 +1,37 @@
 [![Build Status](https://travis-ci.org/strinking/docflow.svg?branch=master)](https://travis-ci.org/strinking/docflow)
 # DocFlow
-A Discord Bot written by Members of the [Programming Server](https://discord.gg/010z0Kw1A9ql5c1Qe) to evaluate code and browse documentation.
+A Discord Bot written by Members of the [Programming Server](https://discord.gg/010z0Kw1A9ql5c1Qe) 
+to evaluate code and browse documentation.
 
 ## To Be Done
-- [ ] Basic Bot framework, using the commands extension of discord.py
-- [ ] Code Evaluation using [Coliru](http://coliru.stacked-crooked.com)
+- [X] Basic Bot framework, using the commands extension of discord.py
+- [X] Code Evaluation using [Coliru](http://coliru.stacked-crooked.com)
 - [ ] Documentation search for various languages
 
 ## Setup
-This Project requires a [Python 3.6 Interpreter](https://www.python.org/downloads/) as well as the following packages:
-- discord.py rewrite ([*Documentation*](http://discordpy.readthedocs.io/en/rewrite/))
-
-Usage of a virtual environment is highly recommended.  
-You can setup these using the following commands:
+This Project requires a [Python 3.6 Interpreter](https://www.python.org/downloads/) as well
+as a bunch of dependencies which you can install by using the following command:
 ```bash
-# Create a virtual environment, activate it
-python3 -m venv venv
-source venv/bin/activate
-
-# Install discord.py from GitHub
-python3 -m pip install -U git+https://github.com/Rapptz/discord.py@rewrite
+pip3 install -r requirements.txt
 ```
 
 ## Usage
-You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to Discord. An easy way to do this by using a Virtual Environment is shown [here](TODO: create wiki page). To start the bot, simply use the following commands:
+You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to Discord. 
+To start the bot, simply use the following command, from the root directory:
 
 ```bash
-# If the virtual environment is not activated yet:
-source venv/bin/activate
-
-# Run application
-python3 run.py
-
-# When you're done with using it, use `deactivate` to leave the venv
-deactivate
+python3 src/bot/run.py
 ```
 
+Additionally, if you wish to enable the documentation search functionality found in
+`src/bot/doc.py`, you need to run `make scrape` in order to scrape the required 
+reference files from various documentation pages.
 
 ## Contributing
-The master branch **must always be working without any bugs**, so adding new features, fixing bugs, refactoring code or other changes must be worked on within branches. For discussion and getting your branch merged, please use Pull Requests. Also, please make sure to use *descriptive commit messages* so other collaborators can understand your changes easier. Each commit should represent *one idea*. Please view [this](https://guides.github.com/introduction/flow/) for a more detailed description of the GitHub Flow.
-
-Pull Requests are validated through the tests in `test` using **Travis**, make sure that they pass before submitting one. Additionally, make sure your code conforms to `PEP8`. Tools like [`autopep8`](https://pypi.python.org/pypi/autopep8/) ease this process a lot.
+The master branch should always be functional, so adding new features, fixing bugs,
+refactoring code or other changes must be worked on within branches. 
+For discussion and getting your branch merged, please use Pull Requests. 
+Also, please make sure to use *descriptive commit messages* so other collaborators
+can understand your changes easier. Each commit should represent *one idea*. 
+Please view [this](https://guides.github.com/introduction/flow/) for a more 
+detailed description of the GitHub Flow.
