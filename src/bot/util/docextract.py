@@ -2,16 +2,21 @@
 The functions defined in this module extract the documentation from various
 reference documents and returns them in Embeds, ready to be sent.
 """
-import discord
 import os
 import json
-from search import search
 from typing import Optional
+from .search import search
+
+import discord
 
 
-CPP_SYMBOL_PATH = os.path.join(os.path.abspath(
-    os.path.pardir), 'doc', "cpp_symbols.json")
-CPP_STUB_PATH = os.path.join(os.path.abspath(os.path.pardir), 'doc', 'stub.json') 
+CPP_SYMBOL_PATH = os.path.join(
+    os.path.abspath(os.path.pardir), "docflow", "doc", "cpp_symbols.json"
+)
+CPP_STUB_PATH = os.path.join(
+    os.path.abspath(os.path.pardir), "docflow", "doc", "cpp_stubs.json"
+)
+
 
 def cpp_stub(query: str) -> discord.Embed:
     with open(CPP_STUB_PATH, 'r') as f:
