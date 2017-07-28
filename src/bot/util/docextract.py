@@ -22,26 +22,26 @@ def cpp_stub(query: str) -> discord.Embed:
     with open(CPP_STUB_PATH, 'r') as f:
         data = json.load(f)
     
-    names = [obj["name"] for obj in data]
+    names = [obj['name'] for obj in data]
     search_result = search(names, query)
     for stub_obj in data:
-        if search_result == stub_obj["name"]:
+        if search_result == stub_obj['name']:
             stub = stub_obj
             break
     else:
         return None
     return discord.Embed(
         title=stub['name'],
-        description=stub['items_raw'][0],
+        description=next(iter(stub['items'].values())),
         colour=discord.Colour.dark_blue()
     ).set_footer(
         text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
     ).add_field(
         name="Defined in Header(s)",
-        value="```cpp\n" + ';\n'.join(stub['defined_in_header']) + "```"
+        value="```cpp\n" + ';\n'.join(stub['headers']) + "```"
     ).add_field(
         name="Link",
-        value=stub["link"]
+        value=stub['link']
     )
 
 

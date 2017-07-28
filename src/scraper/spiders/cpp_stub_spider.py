@@ -1,5 +1,4 @@
 import scrapy
-from w3lib.html import remove_tags
 
 
 from ..util import get_paragraphs
@@ -39,11 +38,7 @@ class StubSpider(scrapy.Spider):
             "name":      The name of the page, for example "Containers library"
             "items":     The paragraphs found on the page,
                          stored in "header": "content" pairs.
-            "items_raw": The paragraphs of the page without their headers.
-                         Will be DEPRECATED soon, simply use `.values()`
-                         on the dictionary from `items`.
-            "defined_in_header": The headers that are mentioned within this stub.
-                                 Will be RENAMED to "headers" soon.
+            "headers":   The headers that are mentioned within this stub.
             "link":      A link to the referenced stub page.
         }
         """
@@ -53,7 +48,6 @@ class StubSpider(scrapy.Spider):
         yield {
             "name": page_name,
             "items": items,
-            "items_raw": items.values(),  # TODO: Deprecate this.
-            "defined_in_header": list(set(headers)),  # TODO: Rename to "headers"
+            "headers": list(set(headers)),
             "link": response.url
         }
