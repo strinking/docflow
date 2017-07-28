@@ -14,7 +14,7 @@ class DocSearch:
     def get_doc_path(self, ref_name: str):
         """Gets the full path to the specified documentation file."""
 
-        return os.path.join(os.path.abspath(os.path.pardir), 'docflow', 'doc', ref_name)
+        return os.path.join(os.path.abspath(os.path.pardir), 'doc', ref_name)
 
     def ref_exists(self, ref_name: str):
         """Checks if the given reference document exists."""
@@ -42,7 +42,15 @@ class DocSearch:
         if not self.ref_exists("cpp_symbols.json"):
             return await self.send_notice_no_ref_found(ctx, "C++")
 
-        extracted = docextract.cpp_symbol(symbol)
+        extracted = docextract.cpp_stub(symbol)
+        if extracted is None:
+            await ctx.send("Sorry, not found.")
+        else:
+            await ctx.send(embed=extracted)
+    @commands.command()
+    async def cppstub(self, ctx, query: str):
+        """Queries the data from stubs.json for the search term and returns the closest item"""
+        extracted = docextract.cpp_stub(query)
         if extracted is None:
             await ctx.send("Sorry, not found.")
         else:
