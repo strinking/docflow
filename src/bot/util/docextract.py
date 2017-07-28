@@ -23,8 +23,8 @@ def cpp_stub(query: str) -> discord.Embed:
         if any(n == search_result for n in stub_obj["name"]):
             stub = stub_obj
             break
-        else:
-            return None
+    else:
+        return None
     return discord.Embed(
         title=stub['name'],
         description=stub['items_raw'][0],
