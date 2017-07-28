@@ -52,7 +52,7 @@ class DocSearch:
             await ctx.send(embed=extracted)
 
     @commands.command()
-    async def cppstub(self, ctx, query: str):
+    async def cppstub(self, ctx, *, query: str):
         """Searches the database for C++ stubs and returns the closest item"""
 
         if not self.ref_exists("cpp_stubs.json"):
