@@ -25,7 +25,7 @@ def cpp_stub(query: str) -> discord.Embed:
     names = [obj["name"] for obj in data]
     search_result = search(names, query)
     for stub_obj in data:
-        if any(n == search_result for n in stub_obj["name"]):
+        if search_result == stub_obj["name"]:
             stub = stub_obj
             break
     else:
