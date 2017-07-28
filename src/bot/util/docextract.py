@@ -19,9 +19,15 @@ CPP_STUB_PATH = os.path.join(
 
 
 def cpp_stub(query: str) -> discord.Embed:
+    """
+    Searches for the given query in the
+    C++ stub database, for example
+    "Strings Library".
+    """
+
     with open(CPP_STUB_PATH, 'r') as f:
         data = json.load(f)
-    
+
     names = [obj['name'] for obj in data]
     search_result = search(names, query)
     for stub_obj in data:
@@ -30,6 +36,7 @@ def cpp_stub(query: str) -> discord.Embed:
             break
     else:
         return None
+
     return discord.Embed(
         title=stub['name'],
         description=next(iter(stub['items'].values())),
@@ -46,6 +53,11 @@ def cpp_stub(query: str) -> discord.Embed:
 
 
 def cpp_symbol(name: str) -> Optional[discord.Embed]:
+    """
+    Extracts the given C++ symbol from the
+    C++ symbol index, for example std::cout.
+    """
+
     with open(CPP_SYMBOL_PATH, 'r') as f:
         data = json.load(f)
 
@@ -64,10 +76,12 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
         text="Data from cppreference.com, licensed under CC-BY-SA and GFDL.",
     ).add_field(
         name="Signature",
-        value="```cpp\n" + ';\n'.join(symbol['sigs']) + "```"
+        value="```cpp\n" + ''.join(symbol['sigs']) + "```"
     ).add_field(
         name="Defined in Header(s)",
-        value='`' + '`, `'.join(symbol['defined_in_header']) + '`' or "No definition found."
+        value='`' + '`, `'.join(
+            symbol['defined_in_header']
+        ) + '`' or "No definition found."
     ).add_field(
         name="Parameters",
         value='\n'.join(symbol['params']) or "No parameters found."
