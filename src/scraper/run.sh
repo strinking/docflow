@@ -1,2 +1,2 @@
-scrapy crawl stubs -o ../doc/stub.json
-scrapy crawl cpp-symbols -o ../doc/cpp_symbols.json
+scrapy crawl stubs -o ../bot/doc/stub.json
+scrapy crawl cpp-symbols -o ../bot/doc/cpp_symbols.json
