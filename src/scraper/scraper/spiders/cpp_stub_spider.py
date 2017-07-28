@@ -2,7 +2,7 @@ import scrapy
 from w3lib.html import remove_tags
 
 class StubSpider(scrapy.Spider):
-    name = "stubs"
+    name = "cpp-stubs"
     start_urls = [
         "http://en.cppreference.com/w/cpp"
     ]
