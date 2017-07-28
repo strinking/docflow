@@ -4,6 +4,8 @@
 firstrun:
 	echo "Scraping documentation data..."
 	scrape
+	echo "Installing requirements..."
+	python3 -m pip install -r requirements.txt
 	echo "Starting Bot..."
 	python3 src/bot/run.py
 
