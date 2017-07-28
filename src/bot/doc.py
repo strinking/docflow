@@ -8,6 +8,7 @@ from util import docextract
 
 class DocSearch:
     """Documentation search commands."""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -47,9 +48,14 @@ class DocSearch:
             await ctx.send("Sorry, not found.")
         else:
             await ctx.send(embed=extracted)
+
     @commands.command()
     async def cppstub(self, ctx, query: str):
-        """Queries the data from stubs.json for the search term and returns the closest item"""
+        """Searches the database for C++ stubs and returns the closest item"""
+
+        if not self.ref_exists("cpp_stubs.json"):
+            return await self.send_notice_no_ref_found(ctx, "C++")
+
         extracted = docextract.cpp_stub(query)
         if extracted is None:
             await ctx.send("Sorry, not found.")
