@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/strinking/docflow.svg?branch=master)](https://travis-ci.org/strinking/docflow)
 # DocFlow
 A Discord Bot written by Members of the [Programming Server](https://discord.gg/010z0Kw1A9ql5c1Qe) 
 to evaluate code and browse documentation.
