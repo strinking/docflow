@@ -3,7 +3,7 @@ import discord
 import os
 
 from discord.ext import commands
-from util import docextract
+from .util import docextract
 
 
 class DocSearch:
