@@ -1,21 +1,25 @@
-from html import unescape
-from typing import Optional
-
 import scrapy
 from w3lib.html import remove_tags
+from html import unescape
 
 
 RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
 
 
-def get_return_values(resp: str) -> Optional[str]:
+def get_return_values(resp: str) -> str:
+    """
+    Attempts to extract the return values
+    from the response body. If this is longer
+    than around 80 characters, chances are
+    high that it's garbage, meaning that
+    no return values were found.
+    """
+
     start_p_idx = resp.find(RETURN_VALUE_HEADER) + len(RETURN_VALUE_HEADER)
-    end_p_idx = resp.find(b'<h3>', start_p_idx + 1)
-    values = unescape(remove_tags(resp[start_p_idx:end_p_idx]))
-    if len(values) > 400:
-        # Contains garbage
+    if start_p_idx == -1:
         return None
-    return values
+    end_p_idx = resp.find(b'<h3>', start_p_idx + 1)
+    return unescape(remove_tags(resp[start_p_idx:end_p_idx]))
 
 
 class CppSymbolSpider(scrapy.Spider):
