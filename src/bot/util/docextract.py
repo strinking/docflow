@@ -37,19 +37,24 @@ def cpp_stub(query: str) -> discord.Embed:
     else:
         return None
 
-    return discord.Embed(
+    embed = discord.Embed(
         title=stub['name'],
-        description=next(iter(stub['items'].values())),
         colour=discord.Colour.dark_blue()
-    ).set_footer(
+    )
+
+    for header in stub['items']:
+        embed.add_field(
+            name=header,
+            value=stub['items'][header] or "Nothing found here :("
+        )
+    embed.set_footer(
         text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
-    ).add_field(
-        name="Defined in Header(s)",
-        value="```cpp\n" + ';\n'.join(stub['headers']) + "```"
     ).add_field(
         name="Link",
         value=stub['link']
     )
+
+    return embed
 
 
 def cpp_symbol(name: str) -> Optional[discord.Embed]:
@@ -68,6 +73,12 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
     else:
         return None
 
+    if symbol["return"] is not None:
+        ret_val = symbol["return"].strip()[:80]
+        if len(ret_val) == 80:
+            ret_val += '...'
+    ret_val = symbol["return"]
+
     return discord.Embed(
         title=f"C++: {', '.join(symbol['names'])}",
         description='\n'.join(symbol['desc']),
@@ -85,6 +96,9 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
     ).add_field(
         name="Parameters",
         value='\n'.join(symbol['params']) or "No parameters found."
+    ).add_field(
+        name="Return Value",
+        value=ret_val or "No non-garbage return value found :("
     ).add_field(
         name="Link",
         value=symbol['link']

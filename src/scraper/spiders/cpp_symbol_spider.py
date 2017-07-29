@@ -1,5 +1,21 @@
+from html import unescape
+from typing import Optional
+
 import scrapy
 from w3lib.html import remove_tags
+
+
+RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
+
+
+def get_return_values(resp: str) -> Optional[str]:
+    start_p_idx = resp.find(RETURN_VALUE_HEADER) + len(RETURN_VALUE_HEADER)
+    end_p_idx = resp.find(b'<h3>', start_p_idx + 1)
+    values = unescape(remove_tags(resp[start_p_idx:end_p_idx]))
+    if len(values) > 400:
+        # Contains garbage
+        return None
+    return values
 
 
 class CppSymbolSpider(scrapy.Spider):
@@ -57,9 +73,7 @@ class CppSymbolSpider(scrapy.Spider):
         parameters = response.css(
             "table.t-par-begin"
         ).xpath("string(.//tr)").extract()
-        return_values = response.css(
-            "div.mw-content-ltr > div.t-li1"
-        ).extract()
+        return_values = get_return_values(response.body)
         example = response.css(
             "div.t-example div.cpp"
         ).xpath("string(pre)").extract_first()
@@ -75,9 +89,7 @@ class CppSymbolSpider(scrapy.Spider):
             'desc': [
                 remove_tags(paragraph) for paragraph in description
             ],
-            'return': [
-                remove_tags(r_val) for r_val in return_values
-            ],
+            'return': return_values,
             'params': [
                 param.replace('\n', '').strip() for param in parameters
             ],
