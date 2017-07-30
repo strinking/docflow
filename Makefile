@@ -3,7 +3,7 @@
 # Command for the initial run of the bot, scrapes Documentation and then starts.
 firstrun:
 	echo "Scraping documentation data..."
-	scrape
+	$(MAKE) scrape
 	echo "Installing requirements..."
 	python3 -m pip install -r requirements.txt
 	echo "Starting Bot..."

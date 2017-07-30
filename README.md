@@ -1,11 +1,6 @@
 # DocFlow
 A Discord Bot written by Members of the [Programming Server](https://discord.gg/010z0Kw1A9ql5c1Qe) 
-to evaluate code and browse documentation.
-
-## To Be Done
-- [X] Basic Bot framework, using the commands extension of discord.py
-- [X] Code Evaluation using [Coliru](http://coliru.stacked-crooked.com)
-- [ ] Documentation search for various languages
+to evaluate code and search documentation for various languages.
 
 ## Setup
 This Project requires a [Python 3.6 Interpreter](https://www.python.org/downloads/) as well
@@ -15,6 +10,8 @@ pip3 install -r requirements.txt
 ```
 
 ## Usage
+*Note: To get started as fast as possible, simply run `make firstrun`*.
+
 You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to Discord. 
 To start the bot, simply use the following command, from the root directory:
 
