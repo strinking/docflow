@@ -35,6 +35,7 @@ class Bot(commands.AutoShardedBot):
     @property
     def uptime(self) -> datetime.timedelta:
         """Returns a fresh calculation of the Bot's uptime."""
+
         return datetime.datetime.utcnow() - self.start_time
 
     @staticmethod
@@ -43,10 +44,12 @@ class Bot(commands.AutoShardedBot):
         print('Logged in.')
 
     @staticmethod
-    async def on_command_error(ctx, error, **kwargs):
+    async def on_command_error(ctx, error):  # pylint: disable=arguments-differ
         """Handles all errors returned from Commands."""
+
         async def send_error(description):
             """A small helper function which sends an Embed with red colour."""
+
             await ctx.send(embed=discord.Embed(
                 description=description,
                 colour=discord.Colour.red()

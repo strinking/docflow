@@ -1,3 +1,10 @@
+"""
+Contains a subclass of discord.Embed
+that aims to reduce a lot of boilerplate
+code that was previously used in C++
+extraction methods.
+"""
+
 import discord
 
 

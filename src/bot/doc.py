@@ -1,9 +1,10 @@
 """Contains the documentation search cog."""
-import discord
+
 import os
+import discord
 
 from discord.ext import commands
-import extract
+import extract  # pylint: disable=import-error
 
 
 class DocSearch:
@@ -66,5 +67,5 @@ class DocSearch:
             await ctx.send(embed=extracted)
 
 
-def setup(bot):
+def setup(bot):  # pylint: disable=missing-docstring
     bot.add_cog(DocSearch(bot))

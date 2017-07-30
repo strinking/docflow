@@ -1,8 +1,13 @@
+"""
+This module contains functions
+for evaluating code using the Coliru API.
+"""
+
 import datetime
 import discord
 
 from discord.ext import commands
-from util import coliru
+from util import coliru  # pylint: disable=no-name-in-module
 
 
 LANGUAGE_IMAGES = {
@@ -36,11 +41,14 @@ LANGUAGE_NAMES = {
 
 class Eval:
     """Evaluation Command(s) using the Coliru API."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @staticmethod
     def get_lang(code_block: str) -> str:
+        """Returns the language specified for the markup of a codeblock."""
+
         to_newline = code_block[3:code_block.find('\n')]
         return to_newline.replace(' ', '').replace('\n', '')
 
@@ -76,5 +84,5 @@ class Eval:
             ))
 
 
-def setup(bot):
+def setup(bot):  # pylint: disable=missing-docstring
     bot.add_cog(Eval(bot))

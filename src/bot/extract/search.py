@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def levenshtein(src, tgt):
     if len(src) < len(tgt):
         return levenshtein(tgt, src)
@@ -22,14 +23,13 @@ def levenshtein(src, tgt):
         prev_row = curr_row
     return prev_row[-1]
 
-def ratio(s1, s2):
-    if len(s1) > len(s2):
-        return levenshtein(s1, s2) / len(s1)
-    else:
-        return levenshtein(s1, s2) / len(s2)
+
+def ratio(a, b):  # pylint: disable=invalid-name
+    if len(a) > len(b):
+        return levenshtein(a, b) / len(a)
+    return levenshtein(a, b) / len(b)
 
 
 def search(items, query):
     results = [(item, ratio(item, query)) for item in items]
     return min(results, key=lambda r: r[1])[0]
-

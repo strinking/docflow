@@ -1,4 +1,5 @@
 """Contains functions to administrate the Bot."""
+
 import discord
 
 from discord.ext import commands
@@ -6,6 +7,7 @@ from discord.ext import commands
 
 class Admin:
     """Commands for administrating the Bot."""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -13,6 +15,7 @@ class Admin:
     @commands.has_permissions(manage_server=True)
     async def shutdown(self, ctx):
         """Shut the Bot down."""
+
         await ctx.send(embed=discord.Embed(
             title='Shutting down...',
             colour=discord.Colour.blue()
@@ -23,7 +26,9 @@ class Admin:
     @commands.has_permissions(manage_server=True)
     async def reloadall(self, ctx):
         """Reload all currently loaded Cogs."""
-        # Cast to list to prevent a RuntimeError, since we just want the iteration for the names of the Cogs
+
+        # Cast to list to prevent a RuntimeError
+        # since we just want the iteration for the names of the Cogs
         for extension_name in list(self.bot.extensions):
             self.bot.unload_extension(extension_name)
             self.bot.load_extension(extension_name)
@@ -38,6 +43,7 @@ class Admin:
     @commands.has_permissions(manage_server=True)
     async def reload(self, ctx, *, cog_name: str):
         """Reloads a single Cog."""
+
         cog_name = cog_name.title()
         if cog_name not in self.bot.cogs:
             await ctx.send(embed=discord.Embed(
@@ -57,6 +63,7 @@ class Admin:
     @commands.has_permissions(manage_server=True)
     async def load(self, ctx, *, cog_name: str):
         """Load a Cog."""
+
         cog_name = cog_name.title()
         if cog_name in self.bot.cogs:
             await ctx.send(embed=discord.Embed(
@@ -82,6 +89,7 @@ class Admin:
     @commands.has_permissions(manage_server=True)
     async def unload(self, ctx, *, cog_name: str):
         """Unload a Cog."""
+
         cog_name = cog_name.title()
         if cog_name not in self.bot.cogs:
             await ctx.send(embed=discord.Embed(
@@ -97,5 +105,5 @@ class Admin:
             ))
 
 
-def setup(bot):
+def setup(bot):  # pylint: disable=missing-docstring
     bot.add_cog(Admin(bot))
