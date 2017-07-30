@@ -2,12 +2,14 @@ import aiohttp
 import json
 
 LANGS = {
-    'c': 'mv main.cpp main.c && gcc -std=c11 -Wall -Wextra -pthread main.c && ./a.out',
-    'cpp': 'g++ -std=c++1z -Wall -Wextra -pthread main.cpp && ./a.out',
-    'sh': 'sh main.cpp',
-    'py': 'python3 main.cpp',
-    'ruby': 'ruby main.cpp',
-    'lua': 'lua main.cpp'
+    'c':     'mv main.cpp main.c && gcc -std=c11 -Wall -Wextra -pthread main.c && ./a.out',
+    'cpp':   'g++ -std=c++1z -Wall -Wextra -pthread main.cpp && ./a.out',
+    'sh':    'sh main.cpp',
+    'py':    'python3 main.cpp',
+    'ruby':  'ruby main.cpp',
+    'lua':   'lua main.cpp',
+    'perl':  'perl main.cpp',
+    'perl6': 'perl6 main.cpp'
 }
 
 
