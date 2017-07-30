@@ -29,9 +29,8 @@ def clean(string: str, *remove: str):
     return clean_str
 
 
-
 def get_description(member: str):
-    """returns the description of a member type or function extracted from a table on a symbol page"""
+    """Returns the description of a member type or function extracted from a table on a symbol page"""
 
     split_member = member.split("\n\n")
     if len(split_member) > 1:
@@ -40,14 +39,14 @@ def get_description(member: str):
 
 
 def get_title(member: str):
-    """returns the title of a member string extracted from a table on a symbol page"""
+    """Returns the title of a member string extracted from a table on a symbol page"""
 
     return member.split("\n\n")[0].strip()
 
 
 def get_from_table(filter_text: str, tables: List[str]):
     """
-    returns a dictionary containing information from a two column
+    Returns a dictionary containing information from a two column
     table which contains the filter_text in the form of Title : Description
     """
 
