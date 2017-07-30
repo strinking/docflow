@@ -14,7 +14,9 @@ LANGUAGE_IMAGES = {
     'sh': ('https://openforums.files.wordpress.com/'
            '2013/06/terminal-icon-512x512.png'),
     'ruby': ('https://cdn.codementor.io/assets/topic/category_header/'
-             'ruby-on-rails-bc9ab2af8d92eb4e7eb3211d548a09ad.png')
+             'ruby-on-rails-bc9ab2af8d92eb4e7eb3211d548a09ad.png'),
+    'lua': ('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/'
+            'Lua-Logo.svg/947px-Lua-Logo.svg.png')
 }
 
 LANGUAGE_NAMES = {
@@ -22,7 +24,8 @@ LANGUAGE_NAMES = {
     'cpp': 'C++',
     'py': 'Python',
     'sh': 'Shell',
-    'ruby': 'Ruby'
+    'ruby': 'Ruby',
+    'lua': 'Lua'
 }
 
 
