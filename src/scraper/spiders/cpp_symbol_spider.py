@@ -3,9 +3,7 @@ from html import unescape
 import scrapy
 from w3lib.html import remove_tags
 
-RETURN_VALUE_HEADER = b"""
-<span class="mw-headline" id="Return_value">Return value</span>
-"""
+RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
 
 
 def get_return_values(resp: str) -> str:
@@ -17,11 +15,17 @@ def get_return_values(resp: str) -> str:
     no return values were found.
     """
 
-    start_p_idx = resp.find(RETURN_VALUE_HEADER) + len(RETURN_VALUE_HEADER)
-    if start_p_idx == -1:
+    start = resp.find(RETURN_VALUE_HEADER)
+    if start is None:
         return None
-    end_p_idx = resp.find(b'<h3>', start_p_idx + 1)
-    return unescape(remove_tags(resp[start_p_idx:end_p_idx]))
+    start += len(RETURN_VALUE_HEADER)
+    end = resp.find(b"<h3>", start)
+    return unescape(remove_tags(resp[start:end]))
+
+
+
+def get_signatures(resp: str) -> str:
+    pass
 
 
 class CppSymbolSpider(scrapy.Spider):

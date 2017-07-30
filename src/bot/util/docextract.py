@@ -74,10 +74,12 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
         return None
 
     if symbol["return"] is not None:
-        ret_val = symbol["return"].strip()[:80]
-        if len(ret_val) == 80:
-            ret_val += '...'
-    ret_val = symbol["return"]
+        if len(symbol["return"]) >= 150:
+            ret_val = None
+        else:
+            ret_val = symbol["return"][:150].strip()
+    else:
+        ret_val = symbol["return"]
 
     return discord.Embed(
         title=f"C++: {', '.join(symbol['names'])}",
