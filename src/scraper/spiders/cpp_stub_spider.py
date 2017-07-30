@@ -1,5 +1,15 @@
-import scrapy
+"""
+Contains a spider for scraping the
+bold links found on
+-   http://en.cppreference.com/w/cpp
+These pages contain overviews about
+different language features, such as
+the utility library or threading:
+-   http://en.cppreference.com/w/cpp/thread
+-   http://en.cppreference.com/w/cpp/utility
+"""
 
+import scrapy
 
 from ..util import get_paragraphs
 
