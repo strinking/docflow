@@ -3,21 +3,17 @@ Contains extractor functions for
 scraped data from cppreference.com.
 """
 
-
-import os
 import json
 from typing import Optional
 from .search import search
 
 import discord
 
+from util import get_ref_path
 
-CPP_SYMBOL_PATH = os.path.join(
-    os.path.abspath(os.path.pardir), "docflow", "doc", "cpp_symbols.json"
-)
-CPP_STUB_PATH = os.path.join(
-    os.path.abspath(os.path.pardir), "docflow", "doc", "cpp_stubs.json"
-)
+
+CPP_STUB_PATH = get_ref_path("cpp_stubs.json")
+CPP_SYMBOL_PATH = get_ref_path("cpp_symbols.json")
 
 
 def stub(query: str) -> Optional[discord.Embed]:
