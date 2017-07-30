@@ -22,7 +22,7 @@ def get_return_values(resp: str) -> Optional[str]:
     """
     Attempts to extract the return values
     from the response body. If this is longer
-    than around 80 characters, chances are
+    than around 250 characters, chances are
     high that it's garbage, meaning that
     no return values were found.
     """
@@ -36,17 +36,20 @@ def get_return_values(resp: str) -> Optional[str]:
     return ret_vals if len(ret_vals) < 250 else None
 
 
-def get_signatures(resp: scrapy.http.Response) -> List[str]:
+def get_signatures(resp: scrapy.http.Response) -> str:
     """
     Placeholder function to return
     signatures of a symbol function.
     """
 
     signatures = resp.css(
-        "tbody tr.t-dcl span::text"
+        "tbody tr.t-dcl"
     ).extract()
-    sigs = ''.join(s.replace('\u00a0', '') for s in signatures)
-    return sigs
+    return remove_tags(
+        unescape(
+            ''.join(s.replace('\u00a0', '') for s in signatures)
+        )
+    ).strip()
 
 
 class CppSymbolSpider(scrapy.Spider):
@@ -158,7 +161,7 @@ class CppSymbolSpider(scrapy.Spider):
         if name is None:
             return
         header = resp.css("tr.t-dsc-header a::text").extract()
-        sigs = resp.css("tbody tr.t-dcl span::text").extract()
+        sigs = get_signatures(resp)
         desc = resp.css("div.mw-content-ltr").xpath("string(p)").extract()
         # resp.css("table.t-dsc-begin").xpath("string(tr)").extract()
         types = ["P L A C E H O L D E R"]
@@ -168,9 +171,7 @@ class CppSymbolSpider(scrapy.Spider):
             'type': 1,
             'names': ["std::" + name],
             'header': header,
-            'sigs': ''.join(
-                s.replace('\u00a0', '') for s in sigs
-            ).split(';'),
+            'sigs': sigs,
             'desc': desc,
             'types': types,
             'funcs': funcs,
