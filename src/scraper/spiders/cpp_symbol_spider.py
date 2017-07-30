@@ -24,7 +24,6 @@ def get_return_values(resp: str) -> str:
     return ret_vals if len(ret_vals) < 250 else None
 
 
-
 def get_signatures(resp: str) -> str:
     pass
 
@@ -111,7 +110,7 @@ class CppSymbolSpider(scrapy.Spider):
             'names': [
                 "std::" + n for n in names_without_commas
             ],
-            'defined_in_header': list(set(headers)),
+            'header': list(set(headers)),
             'sigs': ''.join(
                 s.replace('\u00a0', '') for s in signatures
             ).split(';'),
@@ -146,12 +145,12 @@ class CppSymbolSpider(scrapy.Spider):
         )
 
         yield {
-            "type": 1,
-            "name": name,
-            "header": header,
-            "sigs": ''.join(
+            'type': 1,
+            'name': name,
+            'header': header,
+            'sigs': ''.join(
                 s.replace('\u00a0', '') for s in sigs
             ).split(';'),
-            "desc": desc,
-            "types": types
+            'desc': desc,
+            'types': types
         }
