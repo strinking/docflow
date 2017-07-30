@@ -1,9 +1,11 @@
-import scrapy
-from w3lib.html import remove_tags
 from html import unescape
 
+import scrapy
+from w3lib.html import remove_tags
 
-RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
+RETURN_VALUE_HEADER = b"""
+<span class="mw-headline" id="Return_value">Return value</span>
+"""
 
 
 def get_return_values(resp: str) -> str:
