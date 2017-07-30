@@ -10,7 +10,7 @@ such as std::vector or std::thread (see above).
 """
 
 from html import unescape
-from typing import Optional
+from typing import List, Optional
 
 import scrapy
 from w3lib.html import remove_tags
@@ -36,11 +36,17 @@ def get_return_values(resp: str) -> Optional[str]:
     return ret_vals if len(ret_vals) < 250 else None
 
 
-def get_signatures(_: str) -> str:
+def get_signatures(resp: scrapy.http.Response) -> List[str]:
     """
     Placeholder function to return
     signatures of a symbol function.
     """
+
+    signatures = resp.css(
+        "tbody tr.t-dcl span::text"
+    ).extract()
+    sigs = ''.join(s.replace('\u00a0', '') for s in signatures)
+    return sigs
 
 
 class CppSymbolSpider(scrapy.Spider):
@@ -108,16 +114,14 @@ class CppSymbolSpider(scrapy.Spider):
         headers = resp.css(
             "tr.t-dsc-header a::text"
         ).extract()
-        signatures = resp.css(
-            "tbody tr.t-dcl span::text"
-        ).extract()
+        signatures = get_signatures(resp)
         description = resp.css(
             "div.mw-content-ltr"
         ).xpath("string(p)").extract()
+        return_values = get_return_values(resp.body)
         parameters = resp.css(
             "table.t-par-begin"
         ).xpath("string(.//tr)").extract()
-        return_values = get_return_values(resp.body)
         example = resp.css(
             "div.t-example div.cpp"
         ).xpath("string(pre)").extract_first()
@@ -128,9 +132,7 @@ class CppSymbolSpider(scrapy.Spider):
                 "std::" + n for n in names_without_commas
             ],
             'header': list(set(headers)),
-            'sigs': ''.join(
-                s.replace('\u00a0', '') for s in signatures
-            ).split(';'),
+            'sigs': signatures,
             'desc': [
                 remove_tags(paragraph) for paragraph in description
             ],
@@ -171,5 +173,6 @@ class CppSymbolSpider(scrapy.Spider):
             ).split(';'),
             'desc': desc,
             'types': types,
-            'funcs': funcs
+            'funcs': funcs,
+            'link': resp.url
         }
