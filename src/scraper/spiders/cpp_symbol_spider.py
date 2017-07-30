@@ -43,29 +43,29 @@ class CppSymbolSpider(scrapy.Spider):
         "http://en.cppreference.com/w/cpp/symbol_index"
     ]
 
-    def parse(self, response: scrapy.http.Response):
+    def parse(self, resp: scrapy.http.Response):
         """
         Invokes the callback self.parse_symbol_index
         for every link found on this page. A certain
         relevance is already validated here.
         """
 
-        for url in set(response.css('a::attr(href)').extract()):
+        for url in set(resp.css('a::attr(href)').extract()):
             if url.startswith("/w/cpp") and not url.endswith('symbol_index'):
-                yield response.follow(url, callback=self.parse_symbol_index)
+                yield resp.follow(url, callback=self.parse_symbol_index)
 
-    def parse_symbol_index(self, response: scrapy.http.Response):
+    def parse_symbol_index(self, resp: scrapy.http.Response):
         """
         Parses a single symbol found
         in the std:: namespace.
         """
 
-        if get_return_values(response.body) is not None:
+        if get_return_values(resp.body) is not None:
             # It's a function, yield from the function symbol parser
-            yield from self.parse_function(response)
+            yield from self.parse_function(resp)
         else:
             # It's a type, yield from the type symbol parser
-            yield from self.parse_type(response)
+            yield from self.parse_type(resp)
 
     @staticmethod
     def parse_function(resp: scrapy.http.Response):
@@ -128,4 +128,30 @@ class CppSymbolSpider(scrapy.Spider):
 
     @staticmethod
     def parse_type(resp: scrapy.http.Response):
-        pass
+        """
+        Parses a type symbol.
+
+        Examples:
+            http://en.cppreference.com/w/cpp/thread/thread
+            http://en.cppreference.com/w/cpp/container/vector
+        """
+
+        name = "std::" + resp.css("h1.firstHeading::text").extract()
+        header = resp.css("tr.t-dsc-header a::text").extract()
+        sigs = resp.css("tbody tr.t-dcl span::text").extract()
+        desc = resp.css("div.mw-content-ltr").extract()
+        types = zip(
+            resp.css("table.t-dsc-begin code::text").extract(),
+            resp.css("table.t-dsc-begin i::text").extract()
+        )
+
+        yield {
+            "type": 1,
+            "name": name,
+            "header": header,
+            "sigs": ''.join(
+                s.replace('\u00a0', '') for s in sigs
+            ).split(';'),
+            "desc": desc,
+            "types": types
+        }
