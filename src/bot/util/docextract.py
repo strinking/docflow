@@ -75,14 +75,20 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
         )
 
     def parse_type(symbol: dict):
-        pass
+        response.add_field(
+            name="Member Types",
+            value=symbol['types']
+        ).add_field(
+            name="Member Functions",
+            value=symbol['funcs']
+        )
 
     with open(CPP_SYMBOL_PATH, 'r') as f:
         data = json.load(f)
 
     for symbol_obj in data:
         # Compatibility with Types
-        if any(n == name for n in symbol_obj.get('names', 'name')):
+        if any(n == name for n in symbol_obj['names']):
             symbol = symbol_obj
             break
     else:
