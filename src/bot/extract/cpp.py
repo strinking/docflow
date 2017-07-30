@@ -19,7 +19,7 @@ CPP_SYMBOL_PATH = get_ref_path("cpp_symbols.json")
 def stub(query: str) -> Optional[discord.Embed]:
     """
     Searches for the given query in the
-    C++ stub_ database, for example
+    C++ stub database, for example
     "Strings Library".
     """
 
@@ -30,16 +30,16 @@ def stub(query: str) -> Optional[discord.Embed]:
     search_result = search(names, query)
     for stub_obj in data:
         if search_result == stub_obj['name']:
-            stub = stub_obj  # pylint: disable=redefined-outer-name
+            stub_ = stub_obj
             break
     else:
         return None
 
-    embed = CppEmbed(stub)
-    for header in stub['items']:
+    embed = CppEmbed(stub_)
+    for header in stub_['items']:
         embed.add_field(
             name=header,
-            value=stub['items'][header].strip() or "Nothing found here :("
+            value=stub_['items'][header].strip() or "Nothing found here :("
         )
     return embed
 
