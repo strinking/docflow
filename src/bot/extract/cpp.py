@@ -5,12 +5,12 @@ scraped data from cppreference.com.
 
 import json
 from typing import Optional
-from .search import search
 
 import discord
 
-from util import get_ref_path
-
+from cpp_embed import CppEmbed
+from .search import search
+from .util import get_ref_path
 
 CPP_STUB_PATH = get_ref_path("cpp_stubs.json")
 CPP_SYMBOL_PATH = get_ref_path("cpp_symbols.json")
@@ -35,23 +35,12 @@ def stub(query: str) -> Optional[discord.Embed]:
     else:
         return None
 
-    embed = discord.Embed(
-        title=stub['name'],
-        colour=discord.Colour.dark_blue()
-    )
-
+    embed = CppEmbed(stub)
     for header in stub['items']:
         embed.add_field(
             name=header,
             value=stub['items'][header].strip() or "Nothing found here :("
         )
-    embed.set_footer(
-        text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
-    ).add_field(
-        name="Link",
-        value=stub['link']
-    )
-
     return embed
 
 
@@ -60,8 +49,6 @@ def symbol(name: str) -> Optional[discord.Embed]:
     Extracts the given C++ symbol from the
     C++ symbol index, for example std::cout.
     """
-
-    response = discord.Embed()
 
     def parse_function(symbol: dict):
         response.add_field(
@@ -92,12 +79,8 @@ def symbol(name: str) -> Optional[discord.Embed]:
     else:
         return None
 
-    response.title = f"C++: {', '.join(symbol['names'])}"
-    response.description = '\n'.join(symbol['desc'])
-    response.colour = discord.Colour.dark_blue()
-    response.set_footer(
-        text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
-    ).add_field(
+    response = CppEmbed(symbol)
+    response.add_field(
         name="Signature",
         value="```cpp\n" + ''.join(symbol['sigs']) + "```"
     ).add_field(
