@@ -1,9 +1,8 @@
 """
 Contains a Spider for scraping data from the links
 of the C++ symbol index, such as
-http://en.cppreference.com/w/cpp/thread/thread
-or
-http://en.cppreference.com/w/cpp/container/vector
+-   http://en.cppreference.com/w/cpp/thread/thread
+-   http://en.cppreference.com/w/cpp/container/vector
 There are currently two different parsers for the
 links that are parsed here, namely one for function
 symbols, such as std::abs, and one for type symbols,
