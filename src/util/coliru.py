@@ -6,7 +6,8 @@ LANGS = {
     'cpp': 'g++ -std=c++1z -Wall -Wextra -pthread main.cpp && ./a.out',
     'sh': 'sh main.cpp',
     'py': 'python3 main.cpp',
-    'ruby': 'ruby main.cpp'
+    'ruby': 'ruby main.cpp',
+    'lua': 'lua main.cpp'
 }
 
 
