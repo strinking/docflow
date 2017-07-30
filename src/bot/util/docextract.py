@@ -45,7 +45,7 @@ def cpp_stub(query: str) -> Optional[discord.Embed]:
     for header in stub['items']:
         embed.add_field(
             name=header,
-            value=stub['items'][header] or "Nothing found here :("
+            value=stub['items'][header].strip() or "Nothing found here :("
         )
     embed.set_footer(
         text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
@@ -63,45 +63,49 @@ def cpp_symbol(name: str) -> Optional[discord.Embed]:
     C++ symbol index, for example std::cout.
     """
 
+    response = discord.Embed()
+
+    def parse_function(symbol: dict):
+        response.add_field(
+            name="Parameters",
+            value='\n'.join(symbol['params']) or "No parameters found."
+        ).add_field(
+            name="Return Value",
+            value=symbol['return'] or "No non-garbage return value found :("
+        )
+
+    def parse_type(symbol: dict):
+        pass
+
     with open(CPP_SYMBOL_PATH, 'r') as f:
         data = json.load(f)
 
     for symbol_obj in data:
-        if any(n == name for n in symbol_obj['names']):
+        # Compatibility with Types
+        if any(n == name for n in symbol_obj.get('names', 'name')):
             symbol = symbol_obj
             break
     else:
         return None
 
-    if symbol["return"] is not None:
-        if len(symbol["return"]) >= 150:
-            ret_val = None
-        else:
-            ret_val = symbol["return"][:150].strip()
-    else:
-        ret_val = symbol["return"]
-
-    return discord.Embed(
-        title=f"C++: {', '.join(symbol['names'])}",
-        description='\n'.join(symbol['desc']),
-        colour=discord.Colour.dark_blue()
-    ).set_footer(
-        text="Data from cppreference.com, licensed under CC-BY-SA and GFDL.",
+    response.title = f"C++: {', '.join(symbol['names'])}"
+    response.description = '\n'.join(symbol['desc'])
+    response.colour = discord.Colour.dark_blue()
+    response.set_footer(
+        text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
     ).add_field(
         name="Signature",
         value="```cpp\n" + ''.join(symbol['sigs']) + "```"
     ).add_field(
         name="Defined in Header(s)",
         value='`' + '`, `'.join(
-            symbol['defined_in_header']
+            symbol['header']
         ) + '`' or "No definition found."
-    ).add_field(
-        name="Parameters",
-        value='\n'.join(symbol['params']) or "No parameters found."
-    ).add_field(
-        name="Return Value",
-        value=ret_val or "No non-garbage return value found :("
-    ).add_field(
-        name="Link",
-        value=symbol['link']
     )
+
+    if symbol["type"] == 0:
+        parse_function(symbol)
+    elif symbol["type"] == 1:
+        parse_type(symbol)
+
+    return response
