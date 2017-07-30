@@ -104,6 +104,7 @@ class CppSymbolSpider(scrapy.Spider):
         ).xpath("string(pre)").extract_first()
 
         yield {
+            'type': 0,
             'names': [
                 "std::" + n for n in names_without_commas
             ],
