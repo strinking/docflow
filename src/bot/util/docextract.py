@@ -18,7 +18,7 @@ CPP_STUB_PATH = os.path.join(
 )
 
 
-def cpp_stub(query: str) -> discord.Embed:
+def cpp_stub(query: str) -> Optional[discord.Embed]:
     """
     Searches for the given query in the
     C++ stub database, for example
