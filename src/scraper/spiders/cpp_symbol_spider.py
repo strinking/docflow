@@ -63,9 +63,12 @@ class CppSymbolSpider(scrapy.Spider):
         if get_return_values(response.body) is not None:
             # It's a function, yield from the function symbol parser
             yield from self.parse_function(response)
+        else:
+            # It's a type, yield from the type symbol parser
+            yield from self.parse_type(response)
 
     @staticmethod
-    def parse_function(response: scrapy.http.Response):
+    def parse_function(resp: scrapy.http.Response):
         """
         Parses a function symbol.
 
@@ -75,7 +78,7 @@ class CppSymbolSpider(scrapy.Spider):
             http://en.cppreference.com/w/cpp/io/manip/hex
         """
 
-        names = response.css("h1.firstHeading::text").extract()
+        names = resp.css("h1.firstHeading::text").extract()
         names_without_commas = [
             n.replace(', ', '') for n in names if n != ', '
         ]
@@ -86,20 +89,20 @@ class CppSymbolSpider(scrapy.Spider):
         ):
             return
 
-        headers = response.css(
+        headers = resp.css(
             "tr.t-dsc-header a::text"
         ).extract()
-        signatures = response.css(
+        signatures = resp.css(
             "tbody tr.t-dcl span::text"
         ).extract()
-        description = response.css(
+        description = resp.css(
             "div.mw-content-ltr"
         ).xpath("string(p)").extract()
-        parameters = response.css(
+        parameters = resp.css(
             "table.t-par-begin"
         ).xpath("string(.//tr)").extract()
-        return_values = get_return_values(response.body)
-        example = response.css(
+        return_values = get_return_values(resp.body)
+        example = resp.css(
             "div.t-example div.cpp"
         ).xpath("string(pre)").extract_first()
 
@@ -120,5 +123,9 @@ class CppSymbolSpider(scrapy.Spider):
                 param.replace('\n', '').strip() for param in parameters
             ],
             'example': example,
-            'link': response.url
+            'link': resp.url
         }
+
+    @staticmethod
+    def parse_type(resp: scrapy.http.Response):
+        pass
