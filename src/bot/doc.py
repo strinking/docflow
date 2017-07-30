@@ -5,13 +5,15 @@ import os
 from discord.ext import commands
 import extract
 
+
 class DocSearch:
     """Documentation search commands."""
 
     def __init__(self, bot):
         self.bot = bot
 
-    def get_doc_path(self, ref_name: str):
+    @staticmethod
+    def get_doc_path(ref_name: str):
         """Gets the full path to the specified documentation file."""
 
         return os.path.join(
