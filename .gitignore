@@ -13,3 +13,4 @@ venv/
 
 # Scraped Documentation
 doc/*
+.idea/
