@@ -1,4 +1,17 @@
+"""
+Contains a Spider for scraping data from the links
+of the C++ symbol index, such as
+http://en.cppreference.com/w/cpp/thread/thread
+or
+http://en.cppreference.com/w/cpp/container/vector
+There are currently two different parsers for the
+links that are parsed here, namely one for function
+symbols, such as std::abs, and one for type symbols,
+such as std::vector or std::thread (see above).
+"""
+
 from html import unescape
+from typing import Optional
 
 import scrapy
 from w3lib.html import remove_tags
@@ -6,7 +19,7 @@ from w3lib.html import remove_tags
 RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
 
 
-def get_return_values(resp: str) -> str:
+def get_return_values(resp: str) -> Optional[str]:
     """
     Attempts to extract the return values
     from the response body. If this is longer
@@ -24,8 +37,11 @@ def get_return_values(resp: str) -> str:
     return ret_vals if len(ret_vals) < 250 else None
 
 
-def get_signatures(resp: str) -> str:
-    pass
+def get_signatures(_: str) -> str:
+    """
+    Placeholder function to return
+    signatures of a symbol function.
+    """
 
 
 class CppSymbolSpider(scrapy.Spider):
@@ -42,16 +58,16 @@ class CppSymbolSpider(scrapy.Spider):
         "http://en.cppreference.com/w/cpp/symbol_index"
     ]
 
-    def parse(self, resp: scrapy.http.Response):
+    def parse(self, response: scrapy.http.Response):
         """
         Invokes the callback self.parse_symbol_index
         for every link found on this page. A certain
         relevance is already validated here.
         """
 
-        for url in set(resp.css('a::attr(href)').extract()):
+        for url in set(response.css('a::attr(href)').extract()):
             if url.startswith("/w/cpp") and not url.endswith('symbol_index'):
-                yield resp.follow(url, callback=self.parse_symbol_index)
+                yield response.follow(url, callback=self.parse_symbol_index)
 
     def parse_symbol_index(self, resp: scrapy.http.Response):
         """
@@ -143,7 +159,8 @@ class CppSymbolSpider(scrapy.Spider):
         header = resp.css("tr.t-dsc-header a::text").extract()
         sigs = resp.css("tbody tr.t-dcl span::text").extract()
         desc = resp.css("div.mw-content-ltr").xpath("string(p)").extract()
-        types = ["P L A C E H O L D E R"]  # resp.css("table.t-dsc-begin").xpath("string(tr)").extract()
+        # resp.css("table.t-dsc-begin").xpath("string(tr)").extract()
+        types = ["P L A C E H O L D E R"]
         funcs = ["P L A C E H O L D E R"]
 
         yield {
