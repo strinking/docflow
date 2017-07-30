@@ -1,7 +1,9 @@
 """
-The functions defined in this module extract the documentation from various
-reference documents and returns them in Embeds, ready to be sent.
+Contains extractor functions for
+scraped data from cppreference.com.
 """
+
+
 import os
 import json
 from typing import Optional
@@ -18,7 +20,7 @@ CPP_STUB_PATH = os.path.join(
 )
 
 
-def cpp_stub(query: str) -> Optional[discord.Embed]:
+def stub(query: str) -> Optional[discord.Embed]:
     """
     Searches for the given query in the
     C++ stub database, for example
@@ -57,7 +59,7 @@ def cpp_stub(query: str) -> Optional[discord.Embed]:
     return embed
 
 
-def cpp_symbol(name: str) -> Optional[discord.Embed]:
+def symbol(name: str) -> Optional[discord.Embed]:
     """
     Extracts the given C++ symbol from the
     C++ symbol index, for example std::cout.

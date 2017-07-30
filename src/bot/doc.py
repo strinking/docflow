@@ -3,8 +3,7 @@ import discord
 import os
 
 from discord.ext import commands
-from util import docextract
-
+import extract
 
 class DocSearch:
     """Documentation search commands."""
@@ -45,7 +44,7 @@ class DocSearch:
         if not self.ref_exists("cpp_symbols.json"):
             return await self.send_notice_no_ref_found(ctx, "C++")
 
-        extracted = docextract.cpp_symbol(symbol)
+        extracted = extract.cpp_symbol(symbol)
         if extracted is None:
             await ctx.send("Sorry, not found.")
         else:
@@ -58,7 +57,7 @@ class DocSearch:
         if not self.ref_exists("cpp_stubs.json"):
             return await self.send_notice_no_ref_found(ctx, "C++")
 
-        extracted = docextract.cpp_stub(query)
+        extracted = extract.cpp_stub(query)
         if extracted is None:
             await ctx.send("Sorry, not found.")
         else:
