@@ -13,10 +13,10 @@ firstrun:
 run: 
 	python3 src/bot/run.py
 
-# Run all scraping spiders and put their results into the doc/ directory
+# Run all scraping spiders and put their results into the data/ directory
 scrape:
-	mkdir -p doc/
-	rm -rf doc/*
+	mkdir -p data/
+	rm -rf data/*
 	cd src/ && \
-	scrapy crawl cpp-symbols --loglevel INFO -o ../doc/cpp_symbols.json && \
-	scrapy crawl cpp-stubs   --loglevel INFO -o ../doc/cpp_stubs.json
+	scrapy crawl cpp-symbols --loglevel INFO -o ../data/cpp_symbols.json && \
+	scrapy crawl cpp-stubs   --loglevel INFO -o ../data/cpp_stubs.json

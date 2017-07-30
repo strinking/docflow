@@ -8,7 +8,7 @@ from typing import Optional
 
 import discord
 
-from cpp_embed import CppEmbed
+from .cpp_embed import CppEmbed
 from .search import search
 from .util import get_ref_path
 

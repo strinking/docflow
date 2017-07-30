@@ -17,7 +17,7 @@ class DocSearch:
         """Gets the full path to the specified documentation file."""
 
         return os.path.join(
-            os.path.abspath(os.path.pardir), "docflow", "doc", ref_name
+            os.path.abspath(os.path.pardir), "docflow", "data", ref_name
         )
 
     def ref_exists(self, ref_name: str):

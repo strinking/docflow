@@ -13,6 +13,6 @@ def get_ref_path(filename: str) -> str:
     """
 
     return os.path.join(
-        os.path.abspath(os.path.pardir), "docflow", "doc", filename
+        os.path.abspath(os.path.pardir), "docflow", "data", filename
     )
 

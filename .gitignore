@@ -12,5 +12,7 @@ src/.scrapy/
 venv/
 
 # Scraped Documentation
-doc/*
+data/
+
+# PyCharm Project Folder
 .idea/
