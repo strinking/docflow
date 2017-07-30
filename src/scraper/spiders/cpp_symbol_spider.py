@@ -59,7 +59,11 @@ class CppSymbolSpider(scrapy.Spider):
         in the std:: namespace.
         """
 
-        if get_return_values(resp.body) is not None:
+        names = resp.css("h1.firstHeading::text").extract()
+        if not all((n.islower() or n == '_' and n.startswith("std::")) for n in names):
+            # It's some unwanted link, ignore it
+            return
+        elif get_return_values(resp.body) is not None:
             # It's a function, yield from the function symbol parser
             yield from self.parse_function(resp)
         else:
@@ -83,9 +87,7 @@ class CppSymbolSpider(scrapy.Spider):
         ]
         if not names_without_commas:
             return
-        elif not all(
-                n.islower() or n == '_' for n in names_without_commas
-        ):
+        elif not all(n.islower() or n == '_' for n in names_without_commas):
             return
 
         headers = resp.css(
@@ -135,22 +137,23 @@ class CppSymbolSpider(scrapy.Spider):
             http://en.cppreference.com/w/cpp/container/vector
         """
 
-        name = "std::" + resp.css("h1.firstHeading::text").extract()
+        name = resp.css("h1.firstHeading::text").extract_first()
+        if name is None:
+            return
         header = resp.css("tr.t-dsc-header a::text").extract()
         sigs = resp.css("tbody tr.t-dcl span::text").extract()
-        desc = resp.css("div.mw-content-ltr").extract()
-        types = zip(
-            resp.css("table.t-dsc-begin code::text").extract(),
-            resp.css("table.t-dsc-begin i::text").extract()
-        )
+        desc = resp.css("div.mw-content-ltr").xpath("string(p)").extract()
+        types = ["P L A C E H O L D E R"]  # resp.css("table.t-dsc-begin").xpath("string(tr)").extract()
+        funcs = ["P L A C E H O L D E R"]
 
         yield {
             'type': 1,
-            'name': name,
+            'names': ["std::" + name],
             'header': header,
             'sigs': ''.join(
                 s.replace('\u00a0', '') for s in sigs
             ).split(';'),
             'desc': desc,
-            'types': types
+            'types': types,
+            'funcs': funcs
         }
