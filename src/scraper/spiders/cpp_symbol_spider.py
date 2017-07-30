@@ -17,28 +17,47 @@ from w3lib.html import remove_tags
 
 RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
 
-def clean(string, *remove):
+def clean(string: str, *remove: str):
+    """
+    removes HTML tags and unescapes HTML encoded strings and 
+    optionally removes any specified strings from the resulting string
+    """
+
     clean_str = unescape(remove_tags(string))
     for item in remove:
         clean_str = clean_str.replace(item, "")
     return clean_str
 
-def get_description(member):
-    if len(member.split("\n\n")) > 1:
-        return member.split("\n\n")[1].strip()
-    else:
-        return "No description available"
 
-def get_title(member):
+
+def get_description(member: str):
+    """returns the description of a member type or function extracted from a table on a symbol page"""
+
+    split_member = member.split("\n\n")
+    if len(split_member) > 1:
+        return split_member[1].strip()
+    return "No description available"
+
+
+def get_title(member: str):
+    """returns the title of a member string extracted from a table on a symbol page"""
+
     return member.split("\n\n")[0].strip()
 
-def get_from_table(filter_text, tables):
+
+def get_from_table(filter_text: str, tables: List[str]):
+    """
+    returns a dictionary containing information from a two column
+    table which contains the filter_text in the form of Title : Description
+    """
+
     for table in tables:
         if filter_text in table:
             members = clean(table).split("\n\n\n\n")
             member_titles = [get_title(member) for member in members]
             member_descriptions = [get_description(member) for member in members]
             return dict(zip(member_titles, member_descriptions))
+
 
 def get_return_values(resp: str) -> Optional[str]:
     """
@@ -185,9 +204,9 @@ class CppSymbolSpider(scrapy.Spider):
         header = resp.css("tr.t-dsc-header a::text").extract()
         sigs = get_signatures(resp)
         desc = resp.css("div.mw-content-ltr").xpath("string(p)").extract()
-        # resp.css("table.t-dsc-begin").xpath("string(tr)").extract()
-        types = get_from_table("Member type", resp.css("table.t-dsc-begin").extract())
-        funcs = get_from_table("member function", resp.css("table.t-dsc-begin").extract())
+        tables = resp.css("table.t-dsc-begin").extract()
+        types = get_from_table("Member type", tables)
+        funcs = get_from_table("member function", tables)
 
         yield {
             'type': 1,
