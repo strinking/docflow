@@ -20,7 +20,8 @@ def get_return_values(resp: str) -> str:
         return None
     start += len(RETURN_VALUE_HEADER)
     end = resp.find(b"<h3>", start)
-    return unescape(remove_tags(resp[start:end]))
+    ret_vals = unescape(remove_tags(resp[start:end]))
+    return ret_vals if len(ret_vals) < 250 else None
 
 
 
@@ -42,7 +43,7 @@ class CppSymbolSpider(scrapy.Spider):
         "http://en.cppreference.com/w/cpp/symbol_index"
     ]
 
-    def parse(self, response):
+    def parse(self, response: scrapy.http.Response):
         """
         Invokes the callback self.parse_symbol_index
         for every link found on this page. A certain
@@ -53,11 +54,25 @@ class CppSymbolSpider(scrapy.Spider):
             if url.startswith("/w/cpp") and not url.endswith('symbol_index'):
                 yield response.follow(url, callback=self.parse_symbol_index)
 
-    @staticmethod
-    def parse_symbol_index(response):
+    def parse_symbol_index(self, response: scrapy.http.Response):
         """
         Parses a single symbol found
         in the std:: namespace.
+        """
+
+        if get_return_values(response.body) is not None:
+            # It's a function, yield from the function symbol parser
+            yield from self.parse_function(response)
+
+    @staticmethod
+    def parse_function(response: scrapy.http.Response):
+        """
+        Parses a function symbol.
+
+        Examples:
+            http://en.cppreference.com/w/cpp/numeric/complex/abs
+            http://en.cppreference.com/w/cpp/algorithm/accumulate
+            http://en.cppreference.com/w/cpp/io/manip/hex
         """
 
         names = response.css("h1.firstHeading::text").extract()
