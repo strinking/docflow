@@ -12,7 +12,7 @@ src/.scrapy/
 venv/
 
 # MyPy, static typing checker
-./mypy_cache
+.mypy_cache/
 
 # Scraped Documentation
 data/
