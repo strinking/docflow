@@ -26,8 +26,7 @@ def stub(query: str) -> Optional[discord.Embed]:
     with open(CPP_STUB_PATH, 'r') as file:
         data = json.load(file)
 
-    names = [obj['name'] for obj in data]
-    search_result = search(names, query)
+    search_result = search(([obj['name'] for obj in data]), query)
     for stub_obj in data:
         if search_result == stub_obj['name']:
             stub_ = stub_obj
