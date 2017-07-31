@@ -63,13 +63,15 @@ def symbol(name: str) -> Optional[discord.Embed]:
 
     def parse_type(symb: dict):
         """Parses a type symbol, such as std::vector."""
+        types = '\n'.join("`{k}`: {v}" for k, v in symb['types'].items())
+        funcs = '\n'.join("`{k}`: {v}" for k, v in symb['funcs'].items())
 
         response.add_field(
             name="Member Types",
-            value=symb['types']
+            value=types
         ).add_field(
             name="Member Functions",
-            value=symb['funcs']
+            value=funcs
         )
 
     with open(CPP_SYMBOL_PATH, 'r') as file:
