@@ -27,9 +27,9 @@ class Admin:
     async def reloadall(self, ctx):
         """Reload all currently loaded Cogs."""
 
-        # Cast to list to prevent a RuntimeError
+        # Cast to tuple to prevent a RuntimeError
         # since we just want the iteration for the names of the Cogs
-        for extension_name in list(self.bot.extensions):
+        for extension_name in tuple(self.bot.extensions):
             self.bot.unload_extension(extension_name)
             self.bot.load_extension(extension_name)
 
