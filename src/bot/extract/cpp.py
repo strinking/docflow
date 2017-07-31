@@ -62,8 +62,15 @@ def symbol(name: str) -> Optional[discord.Embed]:
 
     def parse_type(symb: dict):
         """Parses a type symbol, such as std::vector."""
-        types = '\n'.join("`{k}`: {v}" for k, v in symb['types'].items())
-        funcs = '\n'.join("`{k}`: {v}" for k, v in symb['funcs'].items())
+
+        def member_string(member_dict):
+            """Creates a string from a dictionary of member names and descriptions"""
+
+            return '\n'.join("`{k}`: {v}" for k, v in member_dict.items())
+
+
+        types = member_string(symb['types'])
+        funcs = member_string(symb['funcs'])
 
         response.add_field(
             name="Member Types",
