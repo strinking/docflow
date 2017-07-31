@@ -94,9 +94,9 @@ def symbol(name: str) -> Optional[discord.Embed]:
         value=headers
     )
 
-    if symb["type"] == 0:
-        parse_function(symb)
-    elif symb["type"] == 1:
-        parse_type(symb)
+    {
+        0: parse_function,
+        1: parse_type,
+    }[symb['type']](symb)
 
     return response
