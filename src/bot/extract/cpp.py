@@ -50,15 +50,14 @@ def symbol(name: str) -> Optional[discord.Embed]:
     C++ symbol index, for example std::cout.
     """
 
-    def ghost_example(symb: dict):
+    def ghost_example(example: str):
         """Posts an example if it exists to ghostbin for 10 minutes"""
 
-        if symb['example']:
-            request = requests.post("https://ghostbin.com/paste/new", data={"text" : symb['example'], "expire" : "10m", "lang" : "cpp"})
-            response.add_field(
-                name="Example",
-                value=request.url
-            )
+        request = requests.post("https://ghostbin.com/paste/new", data={"text" : example, "expire" : "10m", "lang" : "cpp"})
+        response.add_field(
+            name="Example",
+            value=request.url
+        )
 
     def parse_function(symb: dict):
         """Parses a function symbol, such as std::abs."""
@@ -117,5 +116,7 @@ def symbol(name: str) -> Optional[discord.Embed]:
         parse_function(symb)
     elif symb["type"] == 1:
         parse_type(symb)
+    if symb["example"] != '':
+        ghost_example(symb["example"])
 
     return response
