@@ -35,9 +35,7 @@ def levenshtein(source, target):
 def ratio(a, b):  # pylint: disable=invalid-name
     """Uses the Levenshtein distance between a and b to find the Levenshtein ratio"""
 
-    if len(a) > len(b):
-        return levenshtein(a, b) / len(a)
-    return levenshtein(a, b) / len(b)
+    return levenshtein(a, b) / max(len(a), len(b))
 
 
 def search(items, query):
@@ -46,5 +44,4 @@ def search(items, query):
     the lowest Levenshtein ratio in order to determine the closest match
     """
 
-    results = [(item, ratio(item, query)) for item in items]
-    return min(results, key=lambda r: r[1])[0]
+    return min(((item, ratio(item, query)) for item in items), key=lambda r: r[1])[0]
