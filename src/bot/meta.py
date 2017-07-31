@@ -77,5 +77,7 @@ class Meta:
         ))
 
 
-def setup(bot):  # pylint: disable=missing-docstring
+def setup(bot):
+    """Adds the Administration cog to the Bot."""
+
     bot.add_cog(Meta(bot))
