@@ -7,7 +7,7 @@ import datetime
 import discord
 
 from discord.ext import commands
-from util import coliru  # pylint: disable=no-name-in-module
+from .util import coliru
 
 
 LANGUAGE_IMAGES = {

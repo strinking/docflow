@@ -84,14 +84,14 @@ def symbol(name: str) -> Optional[discord.Embed]:
         return None
 
     response = CppEmbed(symb)
+    signature = "```cpp\n" + ''.join(symb['sigs']) + "```"
+    headers = '`' + '`, `'.join(symb['header']) + '`' or "No definition found."
     response.add_field(
         name="Signature",
-        value="```cpp\n" + ''.join(symb['sigs']) + "```"
+        value=signature
     ).add_field(
         name="Defined in Header(s)",
-        value='`' + '`, `'.join(
-            symb['header']
-        ) + '`' or "No definition found."
+        value=headers
     )
 
     if symb["type"] == 0:
