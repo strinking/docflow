@@ -63,7 +63,7 @@ def symbol(name: str) -> Optional[discord.Embed]:
         def member_string(member_dict):
             """Creates a string from a dictionary of member names and descriptions"""
 
-            return '\n'.join("`{k}`: {v}" for k, v in member_dict.items())
+            return '\n'.join(f"`{k}`: {v}" for k, v in member_dict.items())
 
         types = member_string(symb['types'])
         funcs = member_string(symb['funcs'])
