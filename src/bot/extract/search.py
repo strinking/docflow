@@ -44,5 +44,4 @@ def search(items, query):
     the lowest Levenshtein ratio in order to determine the closest match
     """
 
-    results = [(item, ratio(item, query)) for item in items]
-    return min(results, key=lambda r: r[1])[0]
+    return min(((item, ratio(item, query)) for item in items), key=lambda r: r[1])[0]
