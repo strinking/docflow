@@ -11,6 +11,9 @@ src/.scrapy/
 # Virtual Environment
 venv/
 
+# MyPy, static typing checker
+./mypy_cache
+
 # Scraped Documentation
 data/
 
