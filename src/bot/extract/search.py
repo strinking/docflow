@@ -35,9 +35,7 @@ def levenshtein(source, target):
 def ratio(a, b):  # pylint: disable=invalid-name
     """Uses the Levenshtein distance between a and b to find the Levenshtein ratio"""
 
-    if len(a) > len(b):
-        return levenshtein(a, b) / len(a)
-    return levenshtein(a, b) / len(b)
+    return levenshtein(a, b) / max(len(a), len(b))
 
 
 def search(items, query):
