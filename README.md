@@ -10,8 +10,6 @@ pip3 install -r requirements.txt
 ```
 
 ## Usage
-*Note: To get started as fast as possible, simply run `make firstrun`*.
-
 You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to Discord. 
 To start the bot, simply use the following command, from the root directory:
 
@@ -23,11 +21,12 @@ If no reference files are found, this will scrape them automatically, which may
 take a few minutes. Afterwards, the results are cached in `docflow/.scrapy/httpcache/`,
 which will greatly increase the speed at which subsequent scrapes run.
 
-If you wish to manually scrape again,
+If you wish to manually scrape again, simply run `python3 -m docflow scrape`.
 
 ## Contributing
 The master branch should always be functional, so adding new features, fixing bugs,
-refactoring code or other changes must be worked on within branches. 
+refactoring code or other changes must be worked on within branches. Please push
+intermediate commits to the `dev`  branch when they have reached a certain stability.
 For discussion and getting your branch merged, please use Pull Requests. 
 Also, please make sure to use *descriptive commit messages* so other collaborators
 can understand your changes easier. Each commit should represent *one idea*. 
