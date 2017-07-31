@@ -11,6 +11,7 @@ import discord
 from .cpp_embed import CppEmbed
 from .search import search
 from .util import get_ref_path
+import requests
 
 CPP_STUB_PATH = get_ref_path("cpp_stubs.json")
 CPP_SYMBOL_PATH = get_ref_path("cpp_symbols.json")
@@ -48,6 +49,16 @@ def symbol(name: str) -> Optional[discord.Embed]:
     Extracts the given C++ symbol from the
     C++ symbol index, for example std::cout.
     """
+
+    def ghost_example(symb: dict):
+        """Posts an example if it exists to ghostbin for 10 minutes"""
+
+        if symb['example']:
+            request = requests.post("https://ghostbin.com/paste/new", data={"text" : symb['example'], "expire" : "10m", "lang" : "cpp"})
+            response.add_field(
+                name="Example",
+                value=request.url
+            )
 
     def parse_function(symb: dict):
         """Parses a function symbol, such as std::abs."""
