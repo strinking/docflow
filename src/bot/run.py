@@ -91,13 +91,26 @@ class Bot(commands.AutoShardedBot):
             pass
 
 
-if __name__ == '__main__':
+def start():
+    """
+    Starts the bot.
+
+    Instead of calling this function
+    from another script, it is also possible
+    to simply execute this file, as the main
+    function will simply call this function.
+    """
+
     BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
 
     for cog in COGS_ON_LOGIN:
-        BOT.load_extension(cog)
+        BOT.load_extension("src.bot." + cog)
 
     if 'DISCORD_TOKEN' in os.environ:
         BOT.run(os.environ['DISCORD_TOKEN'])
     else:
         print(START_FAIL_MSG)
+
+
+if __name__ == '__main__':
+    start()

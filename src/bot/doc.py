@@ -1,7 +1,7 @@
 """Contains the documentation search cog."""
 
 from discord.ext import commands
-import extract  # pylint: disable=import-error
+from . import extract
 
 
 class DocSearch:
