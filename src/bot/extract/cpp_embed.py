@@ -5,6 +5,9 @@ code that was previously used in C++
 extraction methods.
 """
 
+import os
+print(os.getcwd())
+from src.bot import *
 import discord
 
 
