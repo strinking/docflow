@@ -24,7 +24,7 @@ class StubSpider(scrapy.Spider):
     links that are enclosed within <b> tags.
     """
 
-    name = "cpp-stubs"
+    name = "cpp_stubs"
     start_urls = [
         "http://en.cppreference.com/w/cpp"
     ]

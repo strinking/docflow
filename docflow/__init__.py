@@ -1,2 +1,2 @@
-from src.bot.run import start
+from docflow.bot.run import start
 

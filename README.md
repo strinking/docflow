@@ -19,9 +19,11 @@ To start the bot, simply use the following command, from the root directory:
 python3 -m docflow
 ```
 
-Additionally, if you wish to enable the documentation search functionality found in
-`src/bot/doc.py`, you need to run `make scrape` in order to scrape the required 
-reference files from various documentation pages.
+If no reference files are found, this will scrape them automatically, which may
+take a few minutes. Afterwards, the results are cached in `docflow/.scrapy/httpcache/`,
+which will greatly increase the speed at which subsequent scrapes run.
+
+If you wish to manually scrape again,
 
 ## Contributing
 The master branch should always be functional, so adding new features, fixing bugs,

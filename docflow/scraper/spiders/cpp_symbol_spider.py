@@ -101,7 +101,7 @@ class CppSymbolSpider(scrapy.Spider):
     ensure that only actual symbols are scraped.
     """
 
-    name = "cpp-symbols"
+    name = "cpp_symbols"
     start_urls = [
         "http://en.cppreference.com/w/cpp/symbol_index"
     ]

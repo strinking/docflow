@@ -104,7 +104,7 @@ def start():
     BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
 
     for cog in COGS_ON_LOGIN:
-        BOT.load_extension("src.bot." + cog)
+        BOT.load_extension("docflow.bot." + cog)
 
     if 'DISCORD_TOKEN' in os.environ:
         BOT.run(os.environ['DISCORD_TOKEN'])
