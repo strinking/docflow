@@ -16,7 +16,7 @@ LANGS = {
 async def post(cmd: str, src: str):
     data = json.dumps({'cmd': cmd, 'src': src})
     async with aiohttp.ClientSession() as cs:
-        async with cs.post('http://coliru.stacked-crooked.com/compile', data=data) as r:
+        async with cs.post('http://coliru.stacked-crooked.com/compile', data = data) as r:
             return await r.text()
 
 
