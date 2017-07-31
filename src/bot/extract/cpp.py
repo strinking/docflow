@@ -10,10 +10,10 @@ import discord
 
 from .cpp_embed import CppEmbed
 from .search import search
-from .util import get_ref_path
+from .util import get_ref
 
-CPP_STUB_PATH = get_ref_path("cpp_stubs.json")
-CPP_SYMBOL_PATH = get_ref_path("cpp_symbols.json")
+CPP_STUBS = get_ref("cpp_stubs.json")
+CPP_SYMBOLS = get_ref("cpp_symbols.json")
 
 
 def stub(query: str) -> Optional[discord.Embed]:
@@ -23,12 +23,9 @@ def stub(query: str) -> Optional[discord.Embed]:
     "Strings Library".
     """
 
-    with open(CPP_STUB_PATH, 'r') as file:
-        data = json.load(file)
-
-    names = [obj['name'] for obj in data]
+    names = [obj['name'] for obj in CPP_STUBS]
     search_result = search(names, query)
-    for stub_obj in data:
+    for stub_obj in CPP_STUBS:
         if search_result == stub_obj['name']:
             stub_ = stub_obj
             break
@@ -72,10 +69,7 @@ def symbol(name: str) -> Optional[discord.Embed]:
             value=symb['funcs']
         )
 
-    with open(CPP_SYMBOL_PATH, 'r') as file:
-        data = json.load(file)
-
-    for symbol_obj in data:
+    for symbol_obj in CPP_SYMBOLS:
         # Compatibility with Types
         if any(n == name for n in symbol_obj['names']):
             symb = symbol_obj
