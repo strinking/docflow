@@ -16,7 +16,7 @@ You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to
 To start the bot, simply use the following command, from the root directory:
 
 ```bash
-python3 src/bot/run.py
+python3 -m docflow
 ```
 
 Additionally, if you wish to enable the documentation search functionality found in
