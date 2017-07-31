@@ -46,9 +46,9 @@ class Bot(commands.AutoShardedBot):
         """Handles all errors returned from Commands."""
         async def send_error(description):
             """A small helper function which sends an Embed with red colour."""
-            await ctx.send(embed=discord.Embed(
-                description=description,
-                colour=discord.Colour.red()
+            await ctx.send(embed = discord.Embed(
+                description = description,
+                colour      = discord.Colour.red()
             ))
 
         if isinstance(error, commands.MissingRequiredArgument):
@@ -65,9 +65,9 @@ class Bot(commands.AutoShardedBot):
                 '`.help <command>` to get information about its usage.'
             )
         elif isinstance(error, commands.CommandInvokeError):
-            await ctx.send(embed=discord.Embed(
-                title='Exception in command occurred, traceback printed.',
-                colour=discord.Colour.red()
+            await ctx.send(embed = discord.Embed(
+                title  = 'Exception in command occurred, traceback printed.',
+                colour = discord.Colour.red()
             ))
             print(
                 'In {0.command.qualified_name}:'.format(ctx),
@@ -76,19 +76,19 @@ class Bot(commands.AutoShardedBot):
             traceback.print_tb(error.original.__traceback__)
             print(
                 '{0.__class__.__name__}: {0}'.format(error.original),
-                file=sys.stderr
+                file = sys.stderr
             )
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(embed=discord.Embed(
-                title='This Command is currently on cooldown.',
-                colour=discord.Colour.red()
+                title  = 'This Command is currently on cooldown.',
+                colour = discord.Colour.red()
             ))
         elif isinstance(error, commands.CommandNotFound):
             pass
 
 
 if __name__ == '__main__':
-    BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+    BOT = Bot(command_prefix = '.', description = DESCRIPTION, pm_help = None)
 
     for cog in COGS_ON_LOGIN:
         BOT.load_extension(cog)

@@ -24,20 +24,20 @@ class Meta:
     @commands.command()
     async def uptime(self, ctx):
         """Shows the Bot's uptime as well as its starting time."""
-        await ctx.send(embed=discord.Embed(
-            description=f'**Uptime**: `{self.get_readable_uptime()}`',
-            colour=discord.Colour.blue()
+        await ctx.send(embed = discord.Embed(
+            description =f'**Uptime**: `{self.get_readable_uptime()}`',
+            colour      = discord.Colour.blue()
         ))
 
     @commands.command()
     async def invite(self, ctx):
         """Gives you an invitation link for the Bot."""
         link = ('https://discordapp.com/oauth2/authorize?'
-                f'client_id={self.bot.user.id}&scope=bots')
+               f'client_id={self.bot.user.id}&scope=bots')
         await ctx.send(embed=discord.Embed(
-            title='Invite Link',
-            description=link,
-            colour=discord.Colour.blue()
+            title       = 'Invite Link',
+            description = link,
+            colour      = discord.Colour.blue()
         ))
 
     @commands.command()
@@ -45,27 +45,27 @@ class Meta:
         """Displays basic stats about the Bot."""
         stats = discord.Embed()
         stats.add_field(
-            name='Guilds',
-            value=f'Present in {sum(1 for _ in self.bot.guilds)} Guilds'
+            name  = 'Guilds',
+            value =f'Present in {sum(1 for _ in self.bot.guilds)} Guilds'
         ).add_field(
-            name='Users',
-            value=(f'**Total**: {sum(1 for _ in self.bot.users)}\n'
-                   f'**Unique**: {sum(1 for _ in set(self.bot.users))}')
+            name  =  'Users',
+            value =(f'**Total**: {sum(1 for _ in self.bot.users)}\n'
+                    f'**Unique**: {sum(1 for _ in set(self.bot.users))}')
         ).add_field(
-            name='Uptime',
-            value=(f'**Online since**: {self.bot.start_time}\n'
-                   f'**Uptime**: {self.get_readable_uptime()}')
+            name  =  'Uptime',
+            value =(f'**Online since**: {self.bot.start_time}\n'
+                    f'**Uptime**: {self.get_readable_uptime()}')
         ).colour = discord.Colour.blue()
 
-        await ctx.send(embed=stats)
+        await ctx.send(embed = stats)
 
     @commands.command()
     async def cogs(self, ctx):
         """List all currently loaded Cogs."""
-        await ctx.send(embed=discord.Embed(
-            title=f'Currently loaded Cogs ({len(self.bot.cogs)} total)',
-            description=', '.join(self.bot.cogs),
-            colour=discord.Colour.blue()
+        await ctx.send(embed = discord.Embed(
+            title       =f'Currently loaded Cogs ({len(self.bot.cogs)} total)',
+            description = ', '.join(self.bot.cogs),
+            colour      = discord.Colour.blue()
         ))
 
 
