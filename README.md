@@ -2,6 +2,11 @@
 A Discord Bot written by Members of the [Programming Server](https://discord.gg/010z0Kw1A9ql5c1Qe) 
 to evaluate code and search documentation for various languages.
 
+If you are not from the [Programming Discord Server](https://discord.gg/010z0Kw1A9ql5c1Qe),
+chances are you have little idea of what this is doing. But worry not! Check out the
+[`README.md` file in the `docs` directory](./docs/README.md), it should give you an idea of
+what this project is all about - this file is focused around setup instructions.
+
 ## Setup
 This Project requires a [Python 3.6 Interpreter](https://www.python.org/downloads/) as well
 as a bunch of dependencies which you can install by using the following command:
