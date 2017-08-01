@@ -101,13 +101,13 @@ def start():
     function will simply call this function.
     """
 
-    BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+    bot = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
 
     for cog in COGS_ON_LOGIN:
-        BOT.load_extension("docflow.bot." + cog)
+        bot.load_extension("docflow.bot." + cog)
 
     if 'DISCORD_TOKEN' in os.environ:
-        BOT.run(os.environ['DISCORD_TOKEN'])
+        bot.run(os.environ['DISCORD_TOKEN'])
     else:
         print(START_FAIL_MSG)
 
