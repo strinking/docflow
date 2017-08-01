@@ -1,0 +1,17 @@
+language: python
+
+cache: pip
+
+install:
+  - python3 -m pip install --quiet pylint
+
+
+script:
+  - python3 -m pylint docflow/
+
+notifications:
+  email: never
+
+after_script:
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/MaT1g3R/travis_discord/master/travis.sh)"
+

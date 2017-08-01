@@ -19,7 +19,7 @@ RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value
 
 def clean(string: str, *remove: str):
     """
-    removes HTML tags and unescapes HTML encoded strings and 
+    Removes HTML tags and unescapes HTML encoded strings and
     optionally removes any specified strings from the resulting string
     """
 
@@ -30,7 +30,10 @@ def clean(string: str, *remove: str):
 
 
 def get_description(member: str):
-    """Returns the description of a member type or function extracted from a table on a symbol page"""
+    """
+    Returns the description of a member type or function
+    extracted from a table on a symbol page
+    """
 
     split_member = member.split("\n\n")
     if len(split_member) > 1:

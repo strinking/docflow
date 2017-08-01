@@ -68,7 +68,7 @@ def run_spider(spider_name: str):
         stdout=sys.stdout,
         stderr=sys.stderr
     ).communicate()
-    
+
 
 def scrape_data():
     """
