@@ -86,7 +86,11 @@ def symbol(name: str) -> Optional[discord.Embed]:
 
     response = CppEmbed(symb)
     signature = "```cpp\n" + ''.join(symb['sigs']) + "```"
-    headers = '`' + '`, `'.join(symb['header']) + '`' or "No definition found."
+    if symb['header']:
+        backticked_headers = map(lambda header: '`%s`' % header, symb['header'])
+        headers = ', '.join(backticked_headers)
+    else:
+        headers = 'No definition found.'
     response.add_field(
         name="Signature",
         value=signature
@@ -95,6 +99,7 @@ def symbol(name: str) -> Optional[discord.Embed]:
         value=headers
     )
 
+    # Mapping for the symbol types and the parser functions
     {
         0: parse_function,
         1: parse_type,
