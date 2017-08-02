@@ -28,6 +28,7 @@ the description along with basic event handlers.
 """
 
 import os
+import shutil
 import subprocess
 import sys
 
@@ -47,6 +48,8 @@ REFERENCE_DIR = os.path.join(
     os.path.abspath(os.path.pardir), "docflow", "data"
 )
 
+INITIAL_DIR = os.getcwd()
+
 
 def run_spider(spider_name: str):
     """
@@ -55,14 +58,18 @@ def run_spider(spider_name: str):
     set to WARN to reduce clutter.
     """
 
-    os.chdir(SCRAPY_DIR)
+    spider_file_name = spider_name.lower() + ".json"
+    spider_path = os.path.join(REFERENCE_DIR, spider_file_name)
+    if os.path.exists(spider_path):
+        os.remove(spider_path)
+        print(f"Removed existing reference file {spider_file_name}.")
 
     subprocess.Popen(
         [
             "python3", "-m",
             "scrapy", "crawl", spider_name,
             "--loglevel", "WARN",
-            "-o", os.path.join(REFERENCE_DIR), spider_name.lower() + ".json"
+            "-o", spider_path
         ],
         stdout=sys.stdout,
         stderr=sys.stderr
@@ -76,10 +83,14 @@ def scrape_data():
     and end of each spider.
     """
 
+    print("Changing to scrapy directory...")
+    os.chdir(SCRAPY_DIR)
     for spider in SCRAPY_SPIDERS:
-        print(f"Running Spider {spider}... ", end='')
+        print(f"Running Spider {spider}... ")
         run_spider(spider)
-        print("done.")
+        print("Done.")
+    print("Scraping done. Changing back to initial directory.")
+    os.chdir(INITIAL_DIR)
 
 
 if __name__ == '__main__':
