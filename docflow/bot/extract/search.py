@@ -12,7 +12,7 @@ def levenshtein(source, target):
 
     if len(source) < len(target):
         return levenshtein(target, source)
-    if not target:
+    elif not target:
         return len(source)
     source = np.array(tuple(source))
     target = np.array(tuple(target))
