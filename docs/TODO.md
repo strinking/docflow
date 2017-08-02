@@ -7,11 +7,6 @@ as they are completed and make their way into the development and / or master br
 ## Short-term
 Tasks that can / should be completed in the next couple of days.
 
-##### Adding basic documentation
-Docflow is currently rather cryptic for people that are not on the Discord Server.
-Adding some basic information like this file could help getting more people interested
-in the project and lend useful feedback.
-
 ##### Adding tests
 While the scraping spiders were originally very self-contained and more or less impossible
 to test - [attempts were made](https://github.com/strinking/docflow/issues/13) to do this with
