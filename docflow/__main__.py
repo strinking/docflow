@@ -43,7 +43,6 @@ SCRAPY_DIR = os.path.join(
     os.path.abspath(os.path.pardir), "docflow", "docflow", "scraper"
 )
 
-
 REFERENCE_DIR = os.path.join(
     os.path.abspath(os.path.pardir), "docflow", "data"
 )
@@ -68,7 +67,7 @@ def run_spider(spider_name: str):
         stdout=sys.stdout,
         stderr=sys.stderr
     ).communicate()
-    
+
 
 def scrape_data():
     """
