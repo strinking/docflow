@@ -33,9 +33,9 @@ class CppEmbed(discord.Embed):
             name = ', '.join(cpp_obj['names'])
         self.set_author(
             name="C++: " + name,
-            icon_url="http://www.freeiconspng.com/uploads/c--logo-icon-0.png",
+            icon_url=LANGUAGE_IMAGES['cpp'],
             url=cpp_obj['link']
         ).set_footer(
-            text=LANGUAGE_IMAGES['cpp']
+            text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
         )
         self.colour = discord.Colour.blue()
