@@ -62,7 +62,7 @@ def run_spider(spider_name: str):
             "python3", "-m",
             "scrapy", "crawl", spider_name,
             "--loglevel", "WARN",
-            "-o", "../../data/" + spider_name.lower() + ".json"
+            "-o", os.path.join(REFERENCE_DIR), spider_name.lower() + ".json"
         ],
         stdout=sys.stdout,
         stderr=sys.stderr
