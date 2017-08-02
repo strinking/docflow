@@ -54,7 +54,7 @@ def symbol(name: str) -> Optional[discord.Embed]:
             value='\n'.join(symb['params']) or "No parameters found."
         ).add_field(
             name="Return Value",
-            value=symb['return'] or "No non-garbage return value found :("
+            value=symb['return'] or "Nothing correct values found :("
         )
 
     def parse_type(symb: dict):
