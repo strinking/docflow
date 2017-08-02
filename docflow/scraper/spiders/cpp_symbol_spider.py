@@ -17,6 +17,7 @@ from w3lib.html import remove_tags
 
 RETURN_VALUE_HEADER = b'<span class="mw-headline" id="Return_value">Return value</span>'
 
+
 def clean(string: str, *remove: str):
     """
     Removes HTML tags and unescapes HTML encoded strings and
@@ -42,7 +43,10 @@ def get_description(member: str):
 
 
 def get_title(member: str):
-    """Returns the title of a member string extracted from a table on a symbol page"""
+    """
+    Returns the title of a member string
+    extracted from a table on a symbol page.
+    """
 
     return member.split("\n\n")[0].strip()
 
@@ -57,7 +61,9 @@ def get_from_table(filter_text: str, tables: List[str]):
         if filter_text in table:
             members = clean(table).split("\n\n\n\n")
             member_titles = [get_title(member) for member in members]
-            member_descriptions = [get_description(member) for member in members]
+            member_descriptions = [
+                get_description(member) for member in members
+            ]
             return dict(zip(member_titles, member_descriptions))
 
 
@@ -70,13 +76,17 @@ def get_return_values(resp: str) -> Optional[str]:
     no return values were found.
     """
 
+    import re
     start = resp.find(RETURN_VALUE_HEADER)
     if start is None:
         return None
     start += len(RETURN_VALUE_HEADER)
     end = resp.find(b"<h3>", start)
-    ret_vals = unescape(remove_tags(resp[start:end]))
-    return ret_vals if len(ret_vals) < 250 else None
+    clean_content = unescape(remove_tags(resp[start:end]))
+
+    # Reduce multiple newlines to single newlines
+    ret_vals = re.sub(r'\n\s*\n', '\n', clean_content)
+    return ret_vals.strip() if len(ret_vals) < 350 else None
 
 
 def get_signatures(resp: scrapy.http.Response) -> str:
