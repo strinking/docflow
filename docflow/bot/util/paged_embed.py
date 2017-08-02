@@ -7,35 +7,42 @@ class EmbedPage(discord.Embed):
 
 
 class PagedEmbed:
-    def __init__(self, ctx, bot: commands.Bot, *args, **kwargs):
+    def __init__(self, ctx, bot: commands.Bot, idx_emoji, *args, **kwargs):
         self._ctx = ctx
         self._bot = bot
+        self._msg = None
+
         # Dictionary to contain embed Pages in the following format:
         #   {
-        #       "default": EmbedPage,
-        #       "emoji_id": EmbedPage,
-        #       "emoji_id": EmbedPage,
+        #       "idx_emoji": EmbedPage,
+        #       "emoji": EmbedPage,
+        #       "emoji": EmbedPage,
         #       ...
         #   }
         self._pages = {
-            'default': EmbedPage(*args, **kwargs)
+            idx_emoji: EmbedPage(*args, **kwargs)
         }
-        self.current_page = self._pages['default']
+        self.current_page = self._pages[idx_emoji]
 
         # Attach our event listeners to the bot
         self._bot.add_listener(self.on_reaction_add)
-        self._bot.add_listener(self.on_reaction_remove)
 
-    async def add_page(self, emoji: discord.Emoji, page: EmbedPage):
-        pass
+    def add_page(self, emoji: str, page: EmbedPage):
+        if emoji in self._pages:
+            raise ValueError("An EmbedPage for this Emoji was already added")
+        self._pages[emoji] = page
 
     async def send(self):
-        await self._ctx.send(embed=self.current_page)
+        self._msg = await self._ctx.send(embed=self.current_page)
+        for reaction in self._pages:
+            await self._msg.add_reaction(reaction)
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
-        if reaction.id not in self._pages:
+        as_string = str(reaction)
+        if reaction.message != self._msg or user == self._bot.user:
             return
+        elif as_string not in self._pages:
+            return
+        await self._msg.edit(embed=self._pages[as_string])
+        await self._msg.remove_reaction(reaction, user)
 
-    async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.User):
-        if reaction.id not in self._pages:
-            return
