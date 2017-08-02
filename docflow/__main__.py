@@ -28,12 +28,10 @@ the description along with basic event handlers.
 """
 
 import os
-import shutil
 import subprocess
 import sys
 
 from . import start
-
 
 SCRAPY_SPIDERS = (
     "cpp_stubs",
@@ -60,6 +58,7 @@ def run_spider(spider_name: str):
 
     spider_file_name = spider_name.lower() + ".json"
     spider_path = os.path.join(REFERENCE_DIR, spider_file_name)
+
     if os.path.exists(spider_path):
         os.remove(spider_path)
         print(f"Removed existing reference file {spider_file_name}.")
@@ -85,6 +84,7 @@ def scrape_data():
 
     print("Changing to scrapy directory...")
     os.chdir(SCRAPY_DIR)
+
     for spider in SCRAPY_SPIDERS:
         print(f"Running Spider {spider}... ")
         run_spider(spider)
