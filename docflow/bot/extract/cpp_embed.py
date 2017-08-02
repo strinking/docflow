@@ -7,6 +7,8 @@ extraction methods.
 
 import discord
 
+from ..eval import LANGUAGE_IMAGES
+
 
 class CppEmbed(discord.Embed):
     """
@@ -34,6 +36,6 @@ class CppEmbed(discord.Embed):
             icon_url="http://www.freeiconspng.com/uploads/c--logo-icon-0.png",
             url=cpp_obj['link']
         ).set_footer(
-            text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
+            text=LANGUAGE_IMAGES['cpp']
         )
         self.colour = discord.Colour.blue()
