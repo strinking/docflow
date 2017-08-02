@@ -28,6 +28,14 @@ The result may have little or no significance if the magnitude of arg is large
 If a domain error occurs, an implementation-defined value is returned (NaN where supported)
 If a range error occurs due to underflow, the correct result (after rounding) is returned."""
 
+with urlopen("http://en.cppreference.com/w/cpp/container/vector") as ref:
+    TYPE_VECTOR_HTML = ref.read()
+TYPE_VECTOR_RETURN = None
+
+with urlopen("http://en.cppreference.com/w/cpp/container/multimap") as ref:
+    TYPE_MULTIMAP_HTML = ref.read()
+TYPE_MULTIMAP_RETURN = None
+
 
 def test_clean_removes_tags():
     """
@@ -67,13 +75,11 @@ def test_clean_unescape_html():
     assert cleaned == "3 < 5, but 3 > 1"
 
 
-def test_get_return_values():
+def test_return_values_functions():
     """
     Validates that the get_return_values
     scraper function properly extracts
-    the return values for functions, and
-    returns None where no return values
-    or "garbage" was found.
+    the return values for functions.
     """
 
     abs_ret = cpp_symbol_spider.get_return_values(FUNC_ABS_HTML)
@@ -81,3 +87,18 @@ def test_get_return_values():
 
     tan_ret = cpp_symbol_spider.get_return_values(FUNC_TAN_HTML)
     assert tan_ret == FUNC_TAN_RETURN
+
+
+def test_return_values_types():
+    """
+    Validates that the get_return_values
+    scraper functions returns None for
+    types, as the types themselves
+    have no return value(s).
+    """
+
+    multimap_ret = cpp_symbol_spider.get_return_values(TYPE_MULTIMAP_HTML)
+    assert multimap_ret is None
+
+    vector_ret = cpp_symbol_spider.get_return_values(TYPE_VECTOR_HTML)
+    assert vector_ret is None
