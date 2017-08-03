@@ -2,6 +2,7 @@
 
 from discord.ext import commands
 from . import extract
+from .util.paged_embed import PagedEmbed
 
 
 class DocSearch:
@@ -21,7 +22,9 @@ class DocSearch:
         if extracted is None:
             await ctx.send("Sorry, not found.")
         else:
-            await ctx.send(embed=extracted)
+            embed = PagedEmbed(ctx, self.bot, ":zero:", extracted[0])
+            embed.add_page(":one:", extracted[1])
+            await embed.send()
 
     @commands.command()
     async def cppstub(self, ctx, *, query: str):
