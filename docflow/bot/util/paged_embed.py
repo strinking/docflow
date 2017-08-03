@@ -1,6 +1,5 @@
 """
 This module defines two classes
-
 for creating so-called paged Embeds.
 
 Paged Embeds are a special type of
@@ -267,7 +266,7 @@ class PagedEmbed:
             handler = self._pages[as_string]
 
             if isinstance(handler, callable):
-                await callable()
+                await reaction()
             elif isinstance(handler, PagedEmbed):
                 await self._msg.edit(embed=self._pages[as_string])
 
