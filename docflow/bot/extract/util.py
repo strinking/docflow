@@ -24,5 +24,5 @@ def get_ref(filename: str) -> dict:
     to be kept in memory for faster access.
     """
 
-    with open(get_ref_path(filename), 'r') as f:
-        return json.load(f)
+    with open(get_ref_path(filename), 'r') as ref:
+        return json.load(ref)
