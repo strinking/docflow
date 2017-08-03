@@ -206,8 +206,41 @@ class PagedEmbed:
         """
 
         if emoji in self._pages:
-            raise ValueError("An EmbedPage for this Emoji was already added")
+            raise ValueError("A handler or an EmbedPage for this Emoji was already added")
         self._pages[emoji] = page
+
+    def add_handler(self, emoji: str, handler: callable):
+        r"""
+        Adds a handler for the given Emoji.
+
+        This allows the bot to perform an
+        operation in a function that is
+        passed as `callable` when Discord
+        users react with the given Emoji.
+
+        The handler can be a coroutine or
+        a regular function.
+
+        Arguments:
+            emoji : str
+                A Unicode Emoji like 👍 or 😃, or
+                the full "text" of a discord Emoji
+                which you can obtain by prepending
+                a \ to the front of a Discord Emoji,
+                resulting in something like this:
+                <:FeelsWOAWMan:273546398996234242>
+                Note, however, that the bot must be
+                able to use the reaction. Since
+                bots have access to Emojis as if
+                they have Nitro, all valid emojis
+            handler : callable
+                A function (either "regular" or a
+                coroutine) that should be called
+                when a user reacts with the emoji.
+        """
+        if emoji in self._pages:
+            raise ValueError("A handler or an EmbedPage for this Emoji was already added")
+        self._pages[emoji] = handler
 
     async def on_reaction_add(self, reaction, user):
         """
@@ -227,8 +260,12 @@ class PagedEmbed:
         if user == self._bot.user or as_string not in self._pages:
             return
         elif reaction.message.id == self._msg.id:
-            await self._msg.edit(embed=self._pages[as_string])
             await self._msg.remove_reaction(reaction, user)
+            handler = self._pages[as_string]
+            if isinstance(handler, callable):
+                await callable()
+            elif isinstance(handler, PagedEmbed):
+                await self._msg.edit(embed=self._pages[as_string])
 
     async def send(self):
         """
