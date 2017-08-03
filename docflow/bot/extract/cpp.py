@@ -10,6 +10,7 @@ import discord
 from .cpp_embed import CppEmbed
 from .search import search
 from .util import get_ref
+from ..util.paged_embed import EmbedPage, PagedEmbed
 
 CPP_STUBS = get_ref("cpp_stubs.json")
 CPP_SYMBOLS = get_ref("cpp_symbols.json")
@@ -65,8 +66,8 @@ def symbol(name: str) -> Optional[discord.Embed]:
 
             return '\n'.join(f"`{k}`: {v}" for k, v in member_dict.items())
 
-        types = member_string(symb['types'])
-        funcs = member_string(symb['funcs'])
+        types = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['types'].items()))
+        funcs = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['funcs'].items()))
 
         response.add_field(
             name="Member Types",
