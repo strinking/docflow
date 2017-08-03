@@ -19,7 +19,7 @@ install:
 script:
   - python3 -m pylint docflow/
   - >-
-    python3 -m pylint docflow/ | reviewdog -f=pylint -ci=travis
+    python3 -m pylint docflow/ | reviewdog -f=pep8 -ci=travis
 
 notifications:
   email: never
