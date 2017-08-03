@@ -32,18 +32,10 @@ from discord.ext import commands
 EMBED_EXPIRY = 5.0
 
 
-class EmbedPage(discord.Embed):
-    """
-    A subclass of discord.Embed
-    which represents a single
-    page of content in a PagedEmbed.
-    """
-
-
 class PagedEmbed:
     """
     A custom type that implements
-    a collection of EmbedPages which
+    a collection of discord.Embeds which
     are navigatable through reactions.
 
     The PagedEmbed will attach an
@@ -106,12 +98,12 @@ class PagedEmbed:
                 description="An apple a day keeps the code debt away.",
                 colour=discord.Colour.green()
             )
-            embed.add_page("💛", EmbedPage(
+            embed.add_page("💛", discord.Embed(
                 title="Yellow!",
                 description="I don't know what to put here.",
                 colour=discord.Colour.gold()
             ))
-            embed.add_page("🚗", EmbedPage(
+            embed.add_page("🚗", discord.Embed(
                 title="Red!",
                 description="A red car. That's it!",
                 colour=discord.Colour.red()
@@ -119,7 +111,7 @@ class PagedEmbed:
             await embed.send()
     """
 
-    def __init__(self, ctx, bot: commands.Bot, idx_emoji, *args, **kwargs):
+    def __init__(self, ctx, bot: commands.Bot, idx_emoji, idx_embed, *args, **kwargs):
         """
         Create a new PagedEmbed.
 
@@ -143,7 +135,7 @@ class PagedEmbed:
                 title="Index Page",
                 description="This page gets shown initially."
             )
-            embed.add_page("👍", EmbedPage(
+            embed.add_page("👍", discord.Embed(
                 title="Second Page",
                 description="This page gets shown when you click the 👍 emoji."
             ))
@@ -155,13 +147,13 @@ class PagedEmbed:
 
         # Dictionary to contain embed Pages in the following format:
         #   {
-        #       "idx_emoji": EmbedPage,
-        #       "emoji": EmbedPage,
-        #       "emoji": EmbedPage,
+        #       "idx_emoji": discord.Embed,
+        #       "emoji": discord.Embed,
+        #       "emoji": discord.Embed,
         #       ...
         #   }
         self._pages = {
-            idx_emoji: EmbedPage(*args, **kwargs)
+            idx_emoji: idx_embed
         }
         self.current_page = self._pages[idx_emoji]
 
@@ -182,7 +174,7 @@ class PagedEmbed:
 
         self._bot.remove_listener(self.on_reaction_add)
 
-    def add_page(self, emoji: str, page: EmbedPage):
+    def add_page(self, emoji: str, page: discord.Embed):
         r"""
         Adds a page to this PagedEmbed.
 
@@ -199,14 +191,14 @@ class PagedEmbed:
                 bots have access to Emojis as if
                 they have Nitro, all valid emojis
                 are stored in discord.Client.emojis.
-            page : EmbedPage
-                The EmbedPage which should be
+            page : discord.Embed
+                The discord.Embed which should be
                 displayed when the given Emoji
                 is reacted with / clicked.
         """
 
         if emoji in self._pages:
-            raise ValueError("A handler or an EmbedPage for this Emoji was already added")
+            raise ValueError("A handler or an discord.Embed for this Emoji was already added")
         self._pages[emoji] = page
 
     def add_handler(self, emoji: str, handler: callable):
@@ -240,7 +232,7 @@ class PagedEmbed:
         """
 
         if emoji in self._pages:
-            raise ValueError("A handler or an EmbedPage for this Emoji was already added")
+            raise ValueError("A handler or an discord.Embed for this Emoji was already added")
         self._pages[emoji] = handler
 
     async def on_reaction_add(self, reaction, user):
