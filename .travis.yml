@@ -5,21 +5,13 @@ python:
 
 cache: pip
 
-env:
-  global:
-    - secure: n9x+1Onezk1cgCE5Xt6Wpl6YaB4Nze5tyUv2LfUdtDocKdpMEqxWTUyYAnK+iyMVc42wvDKOpoqnLUhVtk9jIY1fkO2dOl0lBaXk/phFOrJwUXnkCu23WhUY0StKDfqN+prjj7OqDhqcajMXugBwhKoDvZiDEVdGxzhs5PkSoNSP3oWfisMNMzIznYo89r+XF+uoNST/LRMugD8yLY1VJNJrjNC7027IVVxbPG5roaJbBQmnaXI46rxlZVWBERCNuB5SDB68OikF2klvuep3JH8HBGS6l4J9MvmisnHe8ABtFinz3+/PLUz72qps90kmI8hBwpwYAWwQVNfWES3IkaQlf/hUtv0TfeD9DqkVmuKDurw0tplrTa9dKhl4Ieqrf1+u5sV6L5eCDcz6LEoqkDzHAtvxAQi0LwbiP5o2EKionmITD2RsxIe8a+UhEiOhB+51+tHMfiPoFZ87M2LPbOraBtAnoSPnxgTUAH+o0B83jRAycSVP2kVjUn4Dz61TFMygKfzHkSu5K7hqNZ/PFyFWXDLz3A/IgNfEAX08SSuVGw1fs/d8UjHjEGCD/uzwi9U/8RX19OwTw2Eg9R6Ebb/vF8dahp7YW9HNaGncU2E4geLsKrWtRyaPAKAHd3dZP5K2SStNI2SNouRoLydEzLRPXHyGWkuaHrxyK73XKSg=
-    - REVIEWDOG_VERSION=0.9.6
-
 install:
   - python3 -m pip install --quiet -r requirements.txt
   - python3 -m pip install --quiet    pylint
-  - mkdir -p ~/bin/ && export export PATH="~/bin/:$PATH"
-  - curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o ~/bin/reviewdog && chmod +x ~/bin/reviewdog
+
 
 script:
   - python3 -m pylint docflow/
-  - >-
-    python3 -m pylint docflow/ | reviewdog -f=pylint -ci=travis
 
 notifications:
   email: never
