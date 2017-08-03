@@ -111,7 +111,7 @@ class PagedEmbed:
             await embed.send()
     """
 
-    def __init__(self, ctx, bot: commands.Bot, idx_emoji, idx_embed, *args, **kwargs):
+    def __init__(self, ctx, bot: commands.Bot, idx_emoji, idx_embed):
         """
         Create a new PagedEmbed.
 
@@ -250,16 +250,20 @@ class PagedEmbed:
         """
 
         as_string = str(reaction)
+        print(as_string)
+
 
         if user == self._bot.user or as_string not in self._pages:
             return
         elif reaction.message.id == self._msg.id:
             await self._msg.remove_reaction(reaction, user)
             handler = self._pages[as_string]
+            print(handler)
 
-            if isinstance(handler, callable):
+            if callable(handler):
+                print(self._msg)
                 await reaction()
-            elif isinstance(handler, PagedEmbed):
+            elif isinstance(handler, discord.Embed):
                 await self._msg.edit(embed=self._pages[as_string])
 
     async def send(self):

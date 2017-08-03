@@ -49,8 +49,7 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
     def parse_function(symb: dict):
         """Parses a function symbol, such as std::abs."""
 
-        embed = CppEmbed(symb)
-        embed.add_field(
+        response.add_field(
             name="Parameters",
             value='\n'.join(symb['params']) or "No parameters found."
         ).add_field(
@@ -58,16 +57,22 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
             value=symb['return'] or "Nothing correct values found :("
         )
 
-        return embed
+        return "function"
 
     def parse_type(symb: dict):
         """Parses a type symbol, such as std::vector."""
 
-        types = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['types'].items()))
-        funcs = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['funcs'].items()))
+        types = '\n'.join(map(lambda item: f"{item[0]}: {item[1]}", symb['types'].items()))[1:].replace("[edit]", "")
+        funcs = '\n'.join(map(lambda item: f"{item[0]}: {item[1]}", symb['funcs'].items()))[1:].replace("(public member function) [edit]", "")
+        
+        if len(types) > 1020:
+            types = types[:1020] + "..."
+        if len(funcs) > 1020:
+            funcs = funcs[:1020] + "..."
+
+
         
         embed = CppEmbed(symb)
-
         embed.add_field(
             name="Member Types",
             value=types
@@ -75,7 +80,7 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
             name="Member Functions",
             value=funcs
         )
-
+        
         return embed
 
     for symbol_obj in CPP_SYMBOLS:
@@ -109,4 +114,4 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
         1: parse_type,
     }[symb['type']](symb)
 
-    return [response, members]
+    return [response, members], symb['type']
