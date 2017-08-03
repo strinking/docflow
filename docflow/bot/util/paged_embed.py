@@ -1,5 +1,6 @@
 """
 This module defines two classes
+
 for creating so-called paged Embeds.
 
 Paged Embeds are a special type of
@@ -27,7 +28,6 @@ from threading import Timer
 
 import discord
 from discord.ext import commands
-
 
 # After how many minutes the PagedEmbed should ignore reactions
 EMBED_EXPIRY = 5.0
@@ -65,6 +65,7 @@ class PagedEmbed:
     after five minutes, but simply
     assigning another value to the
     variable will change this behavior
+
     for all PagedEmbeds that are sent
     after it was changed.
 
@@ -238,6 +239,7 @@ class PagedEmbed:
                 coroutine) that should be called
                 when a user reacts with the emoji.
         """
+
         if emoji in self._pages:
             raise ValueError("A handler or an EmbedPage for this Emoji was already added")
         self._pages[emoji] = handler
@@ -257,11 +259,13 @@ class PagedEmbed:
         """
 
         as_string = str(reaction)
+
         if user == self._bot.user or as_string not in self._pages:
             return
         elif reaction.message.id == self._msg.id:
             await self._msg.remove_reaction(reaction, user)
             handler = self._pages[as_string]
+
             if isinstance(handler, callable):
                 await callable()
             elif isinstance(handler, PagedEmbed):
@@ -277,6 +281,7 @@ class PagedEmbed:
         """
 
         self._msg = await self._ctx.send(embed=self.current_page)
+
         for reaction in self._pages:
             await self._msg.add_reaction(reaction)
 
