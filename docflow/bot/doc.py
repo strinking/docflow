@@ -22,8 +22,8 @@ class DocSearch:
         if extracted is None:
             await ctx.send("Sorry, not found.")
         else:
-            embed = PagedEmbed(ctx, self.bot, "\U00000031", extracted[0])
-            embed.add_page("🍏", extracted[1])
+            embed = PagedEmbed(ctx, self.bot, "<:gno:340364087814782987>", extracted[0])
+            embed.add_page("<:bjarnethink:340363359599853570>", extracted[1])
             await embed.send()
 
     @commands.command()
