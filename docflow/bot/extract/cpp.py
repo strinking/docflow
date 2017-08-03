@@ -10,7 +10,7 @@ import discord
 from .cpp_embed import CppEmbed
 from .search import search
 from .util import get_ref
-from ..util.paged_embed import EmbedPage, PagedEmbed
+from ..util.paged_embed import PagedEmbed
 
 CPP_STUBS = get_ref("cpp_stubs.json")
 CPP_SYMBOLS = get_ref("cpp_symbols.json")
