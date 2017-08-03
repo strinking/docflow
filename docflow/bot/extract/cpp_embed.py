@@ -10,7 +10,7 @@ import discord
 from ..eval import LANGUAGE_IMAGES
 
 
-class CppEmbed(discord.Embed):
+def CppEmbed(symb: dict, **kwargs):
     """
     A basic Embed containing data that is
     the same across all reference Embeds
@@ -25,17 +25,18 @@ class CppEmbed(discord.Embed):
         - Dark Blue colour
     """
 
-    def __init__(self, cpp_obj: dict, **kwargs):
-        super().__init__(**kwargs)
-        if 'name' in cpp_obj:
-            name = cpp_obj['name']
-        else:
-            name = ', '.join(cpp_obj['names'])
-        self.set_author(
-            name="C++: " + name,
-            icon_url=LANGUAGE_IMAGES['cpp'],
-            url=cpp_obj['link']
-        ).set_footer(
-            text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
-        )
-        self.colour = discord.Colour.blue()
+    embed = discord.Embed(**kwargs)
+    if 'name' in symb:
+        name = symb['name']
+    else:
+        name = ', '.join(symb['names'])
+    embed.set_author(
+        name=f"C++: {name}",
+        icon_url=LANGUAGE_IMAGES['cpp'],
+        url=symb['link']
+    )
+    embed.set_footer(
+        text="Data from cppreference.com, licensed under CC-BY-SA and GFDL."
+    )
+    embed.colour = discord.Colour.blue()
+    return embed
