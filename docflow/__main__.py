@@ -49,7 +49,19 @@ REFERENCE_DIR = os.path.join(
 )
 
 
-def run_spider(spider_name: str):
+
+
+
+
+
+
+
+
+
+
+
+
+def run_spider(     spider_name     : str):
     """
     Runs a single spider and outputs
     to a JSON file. Log levels are
