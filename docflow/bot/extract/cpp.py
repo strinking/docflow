@@ -3,7 +3,7 @@ Contains extractor functions for
 scraped data from cppreference.com.
 """
 
-from typing import Optional
+from typing import Optional, List
 
 import discord
 
@@ -41,7 +41,7 @@ def stub(query: str) -> Optional[discord.Embed]:
     return embed
 
 
-def symbol(name: str) -> Optional[discord.Embed]:
+def symbol(name: str) -> Optional[List[discord.Embed]]:
     """
     Extracts the given C++ symbol from the
     C++ symbol index, for example std::cout.
@@ -50,7 +50,8 @@ def symbol(name: str) -> Optional[discord.Embed]:
     def parse_function(symb: dict):
         """Parses a function symbol, such as std::abs."""
 
-        response.add_field(
+        embed = CppEmbed(symb)
+        embed.add_field(
             name="Parameters",
             value='\n'.join(symb['params']) or "No parameters found."
         ).add_field(
@@ -58,24 +59,25 @@ def symbol(name: str) -> Optional[discord.Embed]:
             value=symb['return'] or "Nothing correct values found :("
         )
 
+        return embed
+
     def parse_type(symb: dict):
         """Parses a type symbol, such as std::vector."""
 
-        def member_string(member_dict):
-            """Creates a string from a dictionary of member names and descriptions"""
-
-            return '\n'.join(f"`{k}`: {v}" for k, v in member_dict.items())
-
         types = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['types'].items()))
         funcs = '\n'.join(map(lambda item: f"`{item[0]}`: {item[1]}", symb['funcs'].items()))
+        
+        embed = CppEmbed(symb)
 
-        response.add_field(
+        embed.add_field(
             name="Member Types",
             value=types
         ).add_field(
             name="Member Functions",
             value=funcs
         )
+
+        return embed
 
     for symbol_obj in CPP_SYMBOLS:
         # Compatibility with Types
@@ -84,6 +86,8 @@ def symbol(name: str) -> Optional[discord.Embed]:
             break
     else:
         return None
+
+
 
     response = CppEmbed(symb)
     signature = "```cpp\n" + ''.join(symb['sigs']) + "```"
@@ -101,9 +105,9 @@ def symbol(name: str) -> Optional[discord.Embed]:
     )
 
     # Mapping for the symbol types and the parser functions
-    {
+    members = {
         0: parse_function,
         1: parse_type,
     }[symb['type']](symb)
 
-    return response
+    return [response, members]
