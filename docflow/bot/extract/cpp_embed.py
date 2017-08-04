@@ -10,11 +10,12 @@ import discord
 from ..eval import LANGUAGE_IMAGES
 
 
-def CppEmbed(symb: dict, **kwargs):
+def cpp_embed(symb: dict, **kwargs):
     """
-    A basic Embed containing data that is
-    the same across all reference Embeds
-    sent out.
+    Creates and returns a basic Embed
+    containing data that is the same
+    across all C++ reference Embeds
+    that are sent out.
 
     As of writing this, this Embed automatically includes:
         - Either a list of names joined on commas, or the

@@ -7,7 +7,7 @@ from typing import Optional, List
 
 import discord
 
-from .cpp_embed import CppEmbed
+from .cpp_embed import cpp_embed
 from .search import search
 from .util import get_ref
 
@@ -31,7 +31,7 @@ def stub(query: str) -> Optional[discord.Embed]:
     else:
         return None
 
-    embed = CppEmbed(stub_)
+    embed = cpp_embed(stub_)
     for header in stub_['items']:
         embed.add_field(
             name=header,
@@ -62,17 +62,21 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
     def parse_type(symb: dict):
         """Parses a type symbol, such as std::vector."""
 
-        types = '\n'.join(map(lambda item: f"{item[0]}: {item[1]}", symb['types'].items()))[1:].replace("[edit]", "")
-        funcs = '\n'.join(map(lambda item: f"{item[0]}: {item[1]}", symb['funcs'].items()))[1:].replace("(public member function) [edit]", "")
-        
+        types = '\n'.join(map(
+            lambda item: f"{item[0]}: {item[1]}", symb['types'].items()
+        ))[1:].replace("[edit]", "")
+        funcs = '\n'.join(map(
+            lambda item: f"{item[0]}: {item[1]}", symb['funcs'].items()
+        ))[1:].replace("(public member function) [edit]", "")
+
         if len(types) > 1020:
             types = types[:1020] + "..."
         if len(funcs) > 1020:
             funcs = funcs[:1020] + "..."
 
 
-        
-        embed = CppEmbed(symb)
+
+        embed = cpp_embed(symb)
         embed.add_field(
             name="Member Types",
             value=types
@@ -80,7 +84,7 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
             name="Member Functions",
             value=funcs
         )
-        
+
         return embed
 
     for symbol_obj in CPP_SYMBOLS:
@@ -93,7 +97,7 @@ def symbol(name: str) -> Optional[List[discord.Embed]]:
 
 
 
-    response = CppEmbed(symb)
+    response = cpp_embed(symb)
     signature = "```cpp\n" + ''.join(symb['sigs']) + "```"
     if symb['header']:
         backticked_headers = map(lambda header: '`%s`' % header, symb['header'])
