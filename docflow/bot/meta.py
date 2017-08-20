@@ -1,4 +1,5 @@
 """Houses Meta commands about the Bot, such as uptime or other statistics."""
+
 import discord
 
 from discord.ext import commands
@@ -8,6 +9,7 @@ SECONDS_IN_A_DAY = 86400
 
 class Meta:
     """Meta Commands with information about the Bot, as well as an invitation link."""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,6 +17,8 @@ class Meta:
         pass
 
     def get_readable_uptime(self) -> str:
+        """Returns the uptime of the bot in a human-readable manner."""
+
         if self.bot.uptime.total_seconds() > SECONDS_IN_A_DAY:
             unit = 'd'
         else:
@@ -24,6 +28,7 @@ class Meta:
     @commands.command()
     async def uptime(self, ctx):
         """Shows the Bot's uptime as well as its starting time."""
+
         await ctx.send(embed=discord.Embed(
             description=f'**Uptime**: `{self.get_readable_uptime()}`',
             colour=discord.Colour.blue()
@@ -32,6 +37,7 @@ class Meta:
     @commands.command()
     async def invite(self, ctx):
         """Gives you an invitation link for the Bot."""
+
         link = ('https://discordapp.com/oauth2/authorize?'
                 f'client_id={self.bot.user.id}&scope=bots')
         await ctx.send(embed=discord.Embed(
@@ -43,6 +49,7 @@ class Meta:
     @commands.command()
     async def stats(self, ctx):
         """Displays basic stats about the Bot."""
+
         stats = discord.Embed()
         stats.add_field(
             name='Guilds',
@@ -62,6 +69,7 @@ class Meta:
     @commands.command()
     async def cogs(self, ctx):
         """List all currently loaded Cogs."""
+
         await ctx.send(embed=discord.Embed(
             title=f'Currently loaded Cogs ({len(self.bot.cogs)} total)',
             description=', '.join(self.bot.cogs),
@@ -70,4 +78,6 @@ class Meta:
 
 
 def setup(bot):
+    """Adds the Administration cog to the Bot."""
+
     bot.add_cog(Meta(bot))

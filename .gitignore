@@ -1,10 +1,21 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
+
+# Cache from Scrapy
+docflow/.scrapy/
 
 # Cache from pytest
 .cache/
 
 # Virtual Environment
 venv/
+
+# MyPy, static typing checker
+.mypy_cache/
+
+# Scraped Documentation
+data/
+
+# PyCharm Project Folder
+.idea/

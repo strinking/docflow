@@ -16,6 +16,7 @@ as described in README.md which the bot can use to login.
 """
 COGS_ON_LOGIN = [
     'admin',
+    'doc',
     'eval',
     'meta'
 ]
@@ -34,6 +35,7 @@ class Bot(commands.AutoShardedBot):
     @property
     def uptime(self) -> datetime.timedelta:
         """Returns a fresh calculation of the Bot's uptime."""
+
         return datetime.datetime.utcnow() - self.start_time
 
     @staticmethod
@@ -42,10 +44,12 @@ class Bot(commands.AutoShardedBot):
         print('Logged in.')
 
     @staticmethod
-    async def on_command_error(ctx, error, **kwargs):
+    async def on_command_error(ctx, error):  # pylint: disable=arguments-differ
         """Handles all errors returned from Commands."""
+
         async def send_error(description):
             """A small helper function which sends an Embed with red colour."""
+
             await ctx.send(embed=discord.Embed(
                 description=description,
                 colour=discord.Colour.red()
@@ -87,13 +91,26 @@ class Bot(commands.AutoShardedBot):
             pass
 
 
-if __name__ == '__main__':
-    BOT = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
+def start():
+    """
+    Starts the bot.
+
+    Instead of calling this function
+    from another script, it is also possible
+    to simply execute this file, as the main
+    function will simply call this function.
+    """
+
+    bot = Bot(command_prefix='.', description=DESCRIPTION, pm_help=None)
 
     for cog in COGS_ON_LOGIN:
-        BOT.load_extension(cog)
+        bot.load_extension("docflow.bot." + cog)
 
     if 'DISCORD_TOKEN' in os.environ:
-        BOT.run(os.environ['DISCORD_TOKEN'])
+        bot.run(os.environ['DISCORD_TOKEN'])
     else:
         print(START_FAIL_MSG)
+
+
+if __name__ == '__main__':
+    start()

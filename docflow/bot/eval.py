@@ -1,25 +1,30 @@
+"""
+This module contains functions
+for evaluating code using the Coliru API.
+"""
+
 import datetime
 import discord
 
 from discord.ext import commands
-from util import coliru
+from .util import coliru
 
 
 LANGUAGE_IMAGES = {
     'c':     'https://cdn.discordapp.com/emojis/232956938965614592.png',
     'cpp':   ('http://logos-vector.com/images/logo/xxl/'
-             '1/3/7/137285/C__7d201_450x450.png'),
+              '1/3/7/137285/C__7d201_450x450.png'),
     'py':    ('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/'
-             'Python-logo-notext.svg/1024px-Python-logo-notext.svg.png'),
+              'Python-logo-notext.svg/1024px-Python-logo-notext.svg.png'),
     'sh':    ('https://openforums.files.wordpress.com/'
-             '2013/06/terminal-icon-512x512.png'),
+              '2013/06/terminal-icon-512x512.png'),
     'ruby':  ('https://cdn.codementor.io/assets/topic/category_header/'
-             'ruby-on-rails-bc9ab2af8d92eb4e7eb3211d548a09ad.png'),
+              'ruby-on-rails-bc9ab2af8d92eb4e7eb3211d548a09ad.png'),
     'lua':   ('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/'
-             'Lua-Logo.svg/947px-Lua-Logo.svg.png')
+              'Lua-Logo.svg/947px-Lua-Logo.svg.png'),
     'perl':  ('https://engineering.purdue.edu/people/joseph.r.kline.1/talks/'
-             'ppw/images_to_use/perl-onion-logo.png')
-    'perl6': ('https://hbfs.files.wordpress.com/2009/11/camelia-logo.png')
+              'ppw/images_to_use/perl-onion-logo.png'),
+    'perl6': 'https://hbfs.files.wordpress.com/2009/11/camelia-logo.png'
 }
 
 LANGUAGE_NAMES = {
@@ -36,11 +41,14 @@ LANGUAGE_NAMES = {
 
 class Eval:
     """Evaluation Command(s) using the Coliru API."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @staticmethod
     def get_lang(code_block: str) -> str:
+        """Returns the language specified for the markup of a codeblock."""
+
         to_newline = code_block[3:code_block.find('\n')]
         return to_newline.replace(' ', '').replace('\n', '')
 
@@ -77,4 +85,6 @@ class Eval:
 
 
 def setup(bot):
+    """Adds the Administration cog to the Bot."""
+
     bot.add_cog(Eval(bot))

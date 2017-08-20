@@ -1,15 +1,21 @@
-language:
-    python
+language: python
 
 python:
-    - 3.6
-    - 3.6-dev
+  - "3.6"
+
+cache: pip
 
 install:
-    - pip3 install -r requirements.txt
+  - python3 -m pip install --quiet -r requirements.txt
+  - python3 -m pip install --quiet    pylint
+
 
 script:
-    pytest
+  - python3 -m pylint docflow/
 
 notifications:
-    email: false
+  email: never
+
+after_script:
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/MaT1g3R/travis_discord/master/travis.sh)"
+
