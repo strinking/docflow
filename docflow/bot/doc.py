@@ -18,10 +18,11 @@ class DocSearch:
         if not symbol.startswith("std::"):
             symbol = "std::" + symbol
 
-        extracted, symbol_type = extract.cpp_symbol(symbol)
-        if extracted is None:
+        result = extract.cpp_symbol(symbol)
+        if result is None:
             await ctx.send("Sorry, not found.")
         else:
+            extracted, symbol_type = result
             if symbol_type == 1:
                 embed = PagedEmbed(ctx, self.bot, "🍏", extracted[0])
                 embed.add_page("💛", extracted[1])
