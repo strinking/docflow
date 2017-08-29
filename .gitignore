@@ -2,6 +2,9 @@
 __pycache__/
 *$py.class
 
+# Non-example configuration file
+config.json
+
 # Cache from Scrapy
 docflow/.scrapy/
 

@@ -1,19 +1,14 @@
 """The entry point for the Bot."""
 
 import datetime
-import os
 import traceback
 import sys
+import json
 
 import discord
 from discord.ext import commands
 
 DESCRIPTION = 'Hello! I am a Bot providing code eval and documentation search.'
-START_FAIL_MSG = """
-Failed to start the Bot.
-Please set an environment variable named DISCORD_TOKEN
-as described in README.md which the bot can use to login.
-"""
 COGS_ON_LOGIN = [
     'admin',
     'doc',
@@ -106,10 +101,9 @@ def start():
     for cog in COGS_ON_LOGIN:
         bot.load_extension("docflow.bot." + cog)
 
-    if 'DISCORD_TOKEN' in os.environ:
-        bot.run(os.environ['DISCORD_TOKEN'])
-    else:
-        print(START_FAIL_MSG)
+    with open("config.json") as config_file:
+        token = json.load(config_file)['discord_token']
+    bot.run(token)
 
 
 if __name__ == '__main__':
