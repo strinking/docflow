@@ -16,7 +16,7 @@ pip3 install -r requirements.txt
 ```
 
 ## Usage
-You need to set a `DISCORD_TOKEN` environment variable for the Bot to connect to Discord. 
+You need to rename `config-example.json` to `config.json` and put your Discord token into it.
 To start the bot, simply use the following command, from the root directory:
 
 ```bash
