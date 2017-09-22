@@ -3,8 +3,11 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
-
 aiohttp = "*"
 "discord.py" = {git = "https://github.com/rapptz/discord.py", ref = "rewrite"}
 scrapy = "*"
 numpy = "*"
+
+[dev-packages]
+pylint = "*"
+

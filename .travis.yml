@@ -6,12 +6,12 @@ python:
 cache: pip
 
 install:
-  - python3 -m pip install --quiet -r requirements.txt
-  - python3 -m pip install --quiet    pylint
+  - python3 -m pip install --quiet    pipenv
+  - pipenv install --dev
 
 
 script:
-  - python3 -m pylint docflow/
+  - pipenv run pylint docflow/
 
 notifications:
   email: never
