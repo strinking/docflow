@@ -19,3 +19,6 @@ data/
 
 # PyCharm Project Folder
 .idea/
+
+# Lockfile
+Pipfile.lock
