@@ -6,7 +6,7 @@ python:
 cache: pip
 
 install:
-  - python3 -m pip install --quiet    pipenv
+  - python3 -m pip install --quiet pipenv
   - pipenv install --dev --skip-lock
 
 
