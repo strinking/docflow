@@ -1,22 +1,12 @@
 """
 The entry point for the Bot
 which will scrape data as needed.
-You can start this script by using
-    python3 -m docflow
-If no reference files for the documentation
-search exist, this entry point will attempt
-to download them through scrapy automatically.
+You can start the bot by using
+    python3 -m docflow.
 
-If you wish to scrape the files manually,
-simply pass `scrape` as an argument:
-    python3 -m docflow scrape
-This will start the also start the bot afterwards.
 Make sure to export an environment variable named
     DISCORD_TOKEN
-since the bot uses this to securely log in
-without the need to store the token somewhere
-in plain text or other configuration files
-that one could push to version control by accident.
+set to your Discord token.
 
 Command group / extension loading is not done
 in this file. If you wish to add a new command
@@ -28,20 +18,8 @@ the description along with basic event handlers.
 """
 
 import os
-import subprocess
-import sys
 
-from . import start
-
-
-SCRAPY_SPIDERS = (
-    "cpp_stubs",
-    "cpp_symbols"
-)
-
-SCRAPY_DIR = os.path.join(
-    os.path.abspath(os.path.pardir), "docflow", "docflow", "scraper"
-)
+from .run import start
 
 
 REFERENCE_DIR = os.path.join(
@@ -49,53 +27,5 @@ REFERENCE_DIR = os.path.join(
 )
 
 
-def run_spider(spider_name: str):
-    """
-    Runs a single spider and outputs
-    to a JSON file. Log levels are
-    set to WARN to reduce clutter.
-    """
-
-    os.chdir(SCRAPY_DIR)
-
-    subprocess.Popen(
-        [
-            "python3", "-m",
-            "scrapy", "crawl", spider_name,
-            "--loglevel", "WARN",
-            "-o", "../../data/" + spider_name.lower() + ".json"
-        ],
-        stdout=sys.stdout,
-        stderr=sys.stderr
-    ).communicate()
-
-
-def scrape_data():
-    """
-    Runs all spiders specified above
-    and informs the user about the start
-    and end of each spider.
-    """
-
-    for spider in SCRAPY_SPIDERS:
-        print(f"Running Spider {spider}... ", end='')
-        run_spider(spider)
-        print("done.")
-
-
 if __name__ == '__main__':
-    print("Checking if reference files exist...")
-
-    os.makedirs(REFERENCE_DIR, exist_ok=True)
-
-    if not os.listdir(REFERENCE_DIR):
-        print("Reference files do not exist. Starting Scrapy...")
-        scrape_data()
-    elif sys.argv.pop() == "scrape":
-        print("Scraping was manually invoked. Starting Scrapy...")
-        scrape_data()
-    else:
-        print("References files found.")
-
-    print("Starting the Bot through run.py...")
     start()

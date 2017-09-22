@@ -1,12 +1,25 @@
-# Main package
-This package marks the entry point for docflow.
-Everything written in `__main__.py` modifies the startup
-process when the bot is started using `python3 -m docflow`.
+# `bot` subdirectory
+This directory contains the source code
+for the Discord Bot itself.
 
-The two subdirectories `bot` and `scraper` are for the Discord
-Bot and the documentation scraper, respectively.
+The files in here (apart from `__init__.py` 
+and `run.py`) are command groups (Cogs)
+which are loaded on startup and can be loaded and
+unloaded at runtime through commands as needed.
+Note, however, that unloading the `Admin` cog
+will result in not being able to load or unload
+any more cogs, since this cog contains the
+commands necessary to do so.
 
-After the scraper ran at least once, a directory named `.scrapy`
-will also appear (ignored by Git). Scrapy uses this to cache
-files from past scraping runs, resulting in a lot faster subsequent
-scraping runs.
+The subdirectory `extract` handles extracting the
+scraped documentation and creating Embeds out of
+them which can then be easily sent through Discord.
+The commands to search & extract documentation data
+for various languages are found in `doc.py`.
+
+The subdirectory `util` currently only houses
+the code evaluation cog for using 
+[Coliru](http://coliru.stacked-crooked.com).
+This runs asynchronous to not block the bot's
+event loop.
+
