@@ -11,8 +11,10 @@ numpy = "==1.13.1"
 fuzzywuzzy = {extras = ["speedup"], version = "==0.15.1"}
 
 [dev-packages]
+
 markdownify = {git = "https://github.com/strinking/python-markdownify.git"}
 tqdm = "*"
+pylint = "*"
 
 
 
