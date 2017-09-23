@@ -8,9 +8,14 @@ aiohttp = "==2.2.5"
 "discord.py" = {git = "https://github.com/rapptz/discord.py", ref = "rewrite"}
 scrapy = "==1.4.0"
 numpy = "==1.13.1"
+fuzzywuzzy = {extras = ["speedup"], version = "==0.15.1"}
 
 [dev-packages]
 markdownify = {git = "https://github.com/strinking/python-markdownify.git"}
+tqdm = "*"
+
+
+
 
 
 
