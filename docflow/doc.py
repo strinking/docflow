@@ -1,9 +1,8 @@
 """Contains the documentation search cog."""
 
-import discord
 from discord.ext import commands
 from . import extract
-from .util.long_content_embed import LongContentEmbed
+from .lce import LongContentEmbed
 
 
 class DocSearch:
