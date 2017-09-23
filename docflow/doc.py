@@ -1,7 +1,9 @@
 """Contains the documentation search cog."""
 
+import discord
 from discord.ext import commands
 from . import extract
+from .util.long_content_embed import LongContentEmbed
 
 
 class DocSearch:
@@ -11,30 +13,43 @@ class DocSearch:
         self.bot = bot
 
     @commands.command()
-    async def cppref(self, ctx, symbol: str):
+    async def cref(self, ctx, *, symbol: str):
         """Searches the stored data from Cppreference for the given symbol."""
 
-        if not symbol.startswith("std::"):
-            symbol = "std::" + symbol
-
-        extracted = extract.cpp_symbol(symbol)
-        if extracted is None:
-            await ctx.send("Sorry, not found.")
-        else:
-            await ctx.send(embed=extracted)
+        extracted = extract.search('c', symbol)
+        embed = LongContentEmbed(extracted, "C Reference",
+                                 0x555, ctx.message.author.id)
+        await embed.send(ctx, self.bot)
 
     @commands.command()
-    async def cppstub(self, ctx, *, query: str):
-        """Searches the database for C++ stubs and returns the closest item"""
+    async def cppref(self, ctx, *, symbol: str):
+        """Searches the stored data from Cppreference for the given symbol."""
 
-        extracted = extract.cpp_stub(query)
-        if extracted is None:
-            await ctx.send("Sorry, not found.")
-        else:
-            await ctx.send(embed=extracted)
+        extracted = extract.search('cpp', symbol)
+        embed = LongContentEmbed(extracted, "C++ Reference",
+                                 0xf34b7d, ctx.message.author.id)
+        await embed.send(ctx, self.bot)
+
+    @commands.command()
+    async def pydoc(self, ctx, *, symbol: str):
+        """Searches the stored data from Python 3.6 for the given symbol."""
+
+        extracted = extract.search('python', symbol)
+        embed = LongContentEmbed(extracted, "Python 3 Documentation",
+                                 0x3581ba, ctx.message.author.id)
+        await embed.send(ctx, self.bot)
+
+    @commands.command()
+    async def mangit(self, ctx, *, subcommand: str):
+        """Searches the database for the given git subcommand docs."""
+
+        extracted = extract.search('git', subcommand)
+        embed = LongContentEmbed(extracted, "Git Manpages",
+                                 0xea4b33, ctx.message.author.id)
+        await embed.send(ctx, self.bot)
 
 
 def setup(bot):
-    """Adds the Administration cog to the Bot."""
+    """Adds the Documentation Search cog to the Bot."""
 
     bot.add_cog(DocSearch(bot))

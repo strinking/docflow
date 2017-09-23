@@ -23,13 +23,13 @@ This is achieved through using
 the message is sent.
 """
 
-from threading import Timer
+import asyncio
 
 import discord
 from discord.ext import commands
 
 
-# After how many minutes the PagedEmbed should ignore reactions
+DELETE_ON_EXPIRY = False
 EMBED_EXPIRY = 5.0
 
 
@@ -145,8 +145,7 @@ class PagedEmbed:
             )
             embed.add_page("👍", EmbedPage(
                 title="Second Page",
-                description="This page gets shown when you click the 👍 emoji."
-            ))
+                description="This page gets shown when you click the 👍 emoji."))
         """
 
         self._ctx = ctx
@@ -167,20 +166,6 @@ class PagedEmbed:
 
         # Attach our event listener to the bot
         self._bot.add_listener(self.on_reaction_add)
-
-    def detach_listener(self):
-        """
-        Detaches the event listener for the
-        on_reaction_add event which the
-        PagedEmbed uses to edit itself on a
-        relevant reaction. Normally, you do
-        not have to call this function
-        manually, it is called automatically
-        after a delay (see documentation for
-        this class itself.).
-        """
-
-        self._bot.remove_listener(self.on_reaction_add)
 
     def add_page(self, emoji: str, page: EmbedPage):
         r"""
@@ -244,7 +229,20 @@ class PagedEmbed:
             await self._msg.add_reaction(reaction)
 
         # Start a timer to detach the event listener after the set interval
-        Timer(EMBED_EXPIRY * 60, self.detach_listener).start()
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.expire_after(EMBED_EXPIRY, DELETE_ON_EXPIRY))
+
+    async def expire_after(self, minutes, delete):
+        """
+        Schedules the listener to get detached
+        after the given amount of minutes. Also
+        deletes the original message, if the
+        `delete` kwarg is passed as `True`.
+        """
+
+        await asyncio.sleep(60 * minutes)
+        self._bot.remove_listener(self.on_reaction_add)
+        await self.delete()
 
     async def delete(self):
         """

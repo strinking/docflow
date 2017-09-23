@@ -38,10 +38,13 @@ def ratio(a, b):  # pylint: disable=invalid-name
     return levenshtein(a, b) / max(len(a), len(b))
 
 
-def search(items, query):
+def search(items, query, key=None):
     """
     Compares a query against every item in a list and finds
     the lowest Levenshtein ratio in order to determine the closest match
     """
 
-    return min(((item, ratio(item, query)) for item in items), key=lambda r: r[1])[0]
+    if key is None:
+        def key(item):
+            return item
+    return min(((item, ratio(item, query)) for item in items), key=key)
