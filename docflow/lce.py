@@ -1,3 +1,14 @@
+"""
+Contains a class that
+enables users to
+paginate through an
+Embed. The Embed accepts
+a long content string as
+its first constructor
+parameter and paginates
+based on that.
+"""
+
 import asyncio
 import datetime
 
@@ -19,6 +30,16 @@ class LongContentEmbed:
 
     def __init__(self, content, title, colour, invoker_id):
         def create_base(page=1):
+            """
+            Creates the base Embed
+            used for each page.
+            The footer of the Embed
+            displays the current
+            page and the total
+            amount of pages stored
+            in this `LongContentEmbed`.
+            """
+
             return discord.Embed(
                 title=title,
                 timetamp=datetime.datetime.utcnow(),
