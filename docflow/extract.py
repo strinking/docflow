@@ -1,11 +1,8 @@
 import os
 import json
 from operator import itemgetter
-from typing import Optional
 
 from fuzzywuzzy import fuzz
-
-from ..util.paged_embed import PagedEmbed
 
 
 def get_data_subdirs():
@@ -36,7 +33,7 @@ def get_symbol_path(lang_dir, name):
     return match['path']
 
 
-def search(lang, name) -> Optional[PagedEmbed]:
+def search(lang, name) -> str:
     lang_dir = get_lang_dir(lang)
     item_path = get_symbol_path(lang_dir, name)
     full_path = os.path.join(lang_dir, item_path)
